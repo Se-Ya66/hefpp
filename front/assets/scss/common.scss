@@ -1,0 +1,171 @@
+body{
+    font-size: 62.5%;
+}
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin : 0;
+    padding : 0;
+}
+
+
+/* Remove default margin */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd {
+    margin: 0;
+}
+
+/* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
+ul[role="list"],
+ol[role="list"] {
+    list-style: none;
+}
+
+/* Set core root defaults */
+html:focus-within {
+    scroll-behavior: smooth;
+}
+
+/* Set core body defaults */
+body {
+    min-height: 100vh;
+    text-rendering: optimizeSpeed;
+    line-height: 1.5;
+}
+
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+    text-decoration-skip-ink: auto;
+}
+
+/* Make images easier to work with */
+img,
+picture {
+    max-width: 100%;
+    display: block;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+ul{
+    list-style: none;
+}
+
+/* Remove all animations and transitions for people that prefer not to see them */
+@media (prefers-reduced-motion: reduce) {
+    html:focus-within {
+    scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+.user-type-production{
+    height: 20px;
+    line-height: 20px;
+    border-radius: 12px;
+    padding:2px 12px;
+    font-size: 11px;
+    color:white;
+    background: linear-gradient(to right, #fdc830, #f37335);
+}
+.user-type-processing{
+    height: 20px;
+    line-height: 20px;
+    border-radius: 12px;
+    padding:2px 12px;
+    font-size: 11px;
+    color:white;
+    background: linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6);
+}
+.recruit-user{
+    display: flex;
+    align-items: center;
+    .recruit-userinfo{
+    margin-left:10px;
+    font-size: 0.8rem;
+    }
+}
+
+.edit-btn{
+    background: linear-gradient(to right, #3a7bd5, #00d2ff);
+    height: 40px;
+    width:100px;
+    line-height: 40px;
+    padding:2px 12px;
+    font-size: 0.8rem;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor:pointer;
+    color:white;
+}
+.confirm-btn{
+    margin: 0 auto 20px;
+}
+.bg{
+    width:100%;
+    height:100%;
+    position: fixed;
+    top:0;
+    left:0;
+    z-index:999;
+    padding:10px;
+    background: rgba(0,0,0,0.7);
+    .bg-inner{
+        width:50%;
+        max-height:80%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateY(-50%) translateX(-50%);
+        background:white;
+        background-blend-mode: multiply;
+        padding:40px;
+        text-align: center;
+        font-size: 1.2rem;
+        span{
+            color:$grey;
+            font-weight:bold;
+        }
+        .btn-wrapper{
+            display: flex;
+            justify-content: center;
+            
+        }
+    }
+}
+.confirm-leave-active,
+.confirm-enter-active {
+    transition: opacity 0.5s;
+}
+.confirm-enter {
+    opacity: 0;
+}
+.confirm-enter-to {
+    opacity: 1;
+}
+.confirm-leave {
+    opacity: 1;
+}
+.confirm-leave-to {
+    opacity: 0;
+}
