@@ -18,17 +18,11 @@ export const mutations = {
 }
 
 export const actions = {
-    follow() {
-        this.$axios.put(`/${this.userId}/follow`)
-        .then(res => {
-            this.followerNum = res.data.follower_count;
-            this.isFollowedBy = true;
-        }).catch(function(error) {
-            console.log(error);
-        });
-    },
     async postMessages({ commit }, send){
-        const data = await this.$axios.$post(`/${send.id}/messages`)
+        const data = await this.$axios.$post(`/${send.id}/messages`,
+        {
+            message:send.text
+        })
         .catch(err => {
             console.log(err)
         })

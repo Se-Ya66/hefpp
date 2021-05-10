@@ -4,7 +4,9 @@ namespace App\Http\Controllers\api;
 
 use Illuminate\Http\Request;
 use App\Models\Message;
+use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\MessageRequest;
 
 
 class MessageController extends Controller
@@ -38,10 +40,17 @@ class MessageController extends Controller
     public function store(Request $request, $id)
     {
         
+        // $message = new Message;
+        // $user = User::find($id);
+        // $request->user()->send()->attach($user);
+        // $message->fill($request->all());
+        // $message->save();
+
         $message = new Message;
         $user = User::find($id);
-        $request->user()->send()->attach($user);
         $message->fill($request->all());
+        $message->send_id = $request->user()->id;
+        $message->receive_id = $user->id;
         $message->save();
 
     }
@@ -96,13 +105,20 @@ class MessageController extends Controller
         //
     }
 
-    public function send(Request $request, $id)
+    public function send(MessageRequest $request, $id)
     {
         
+        // $message = new Message;
+        // $user = User::find($id);
+        // $request->user()->send()->attach($user);
+        // $message->fill($request->all());
+        // $message->save();
+
         $message = new Message;
         $user = User::find($id);
-        $request->user()->send()->attach($user);
         $message->fill($request->all());
+        $message->send_id = $request->user()->id;
+        $message->recieve_id = $user->id;
         $message->save();
 
     }

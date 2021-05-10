@@ -28,13 +28,7 @@
                                     <a href="https://www.yahoo.co.jp/">{{profile.url}}</a>
                                 </span>
                             </div>
-                        <follow-button :userId="$route.params.id"/>
-                        <v-btn 
-                        :to="`/message/${$route.params.id}`"
-                        v-show="show"
-                        >
-                            メッセージ
-                        </v-btn>
+                            <follow-button :userId="$route.params.id"/>
                         </v-col>
                     </v-row>
                 </v-container>
@@ -174,7 +168,6 @@ export default {
         this.$store.dispatch('article/loadArticles');
         this.$store.dispatch('profile/showProfile',this.$route.params.id);
         this.$store.dispatch('users/show',this.$route.params.id);
-        this.canSend;
     },
     computed:{
         ...mapState('article', [
@@ -191,12 +184,7 @@ export default {
             const posts = this.articles.filter(item => item.user_id === num);
             return posts;
         },
-        canSend(){
-            const num = Number(this.$route.params.id);
-            if(this.user.id === num){
-                return this.show = false;
-            }
-        }
+        
     },
     
 }

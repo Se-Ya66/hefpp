@@ -4,23 +4,32 @@
         <span>フォロー:{{followNum}}</span>
         <span>フォロワー:{{followerNum}}</span>
     </div>
-    <div v-show="show">
+    <div class="user-action-wrapper">
+      <div v-show="show">
+        <v-btn 
+        v-show="!isFollowedBy"
+        @click="follow"
+        >
+          <v-icon>
+            mdi-account-plus
+          </v-icon>
+        </v-btn>
+        <v-btn 
+        v-show="isFollowedBy"
+        @click="unfollow"
+        color="blue"
+        >
+          <v-icon>
+            mdi-account-check
+          </v-icon>
+        </v-btn>
+      </div>
       <v-btn 
-      v-show="!isFollowedBy"
-      @click="follow"
+      :to="`/message/${$route.params.id}`"
+      v-show="show"
+      class="ml-3"
       >
-        <v-icon>
-          mdi-account-plus
-        </v-icon>
-      </v-btn>
-      <v-btn 
-      v-show="isFollowedBy"
-      @click="unfollow"
-      color="blue"
-      >
-        <v-icon>
-          mdi-account-check
-        </v-icon>
+          メッセージ
       </v-btn>
     </div>
   </div>
@@ -33,15 +42,18 @@
       return {
         isFollowedBy: false,
         show:true,
+        isView:true,
         followed:false,
         followNum:'',
         followerNum:'',
         followings:[],
         followers:[],
+
       }
     },
     created(){
       this.canFollow;
+      this.canSend;
       this.isFollowed();
       this.count(); 
       this.followList(); 
@@ -52,6 +64,12 @@
         const num = Number(this.$route.params.id);
         if(this.user.id === num){
           return this.show = false;
+        }
+      },
+      canSend(){
+        const num = Number(this.$route.params.id);
+        if(this.user.id === num){
+            return this.show = false;
         }
       }
     },
@@ -112,3 +130,11 @@
     }
   }
 </script>
+
+<style lang="scss">
+.user-action-wrapper{
+  display: flex;
+  align-items: flex-end;
+  margin-top:5px;
+}
+</style>
