@@ -25,6 +25,7 @@
             :rules="[rules.required, rules.counter2]"
             minlength="8"
             counter
+            type="password"
             />
             <v-btn
             color="light-green darken-1"

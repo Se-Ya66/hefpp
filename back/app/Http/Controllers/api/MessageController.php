@@ -64,9 +64,13 @@ class MessageController extends Controller
     public function show(Request $request, $id)
     {
         $send_id = $request->user()->id;
-        $query = Message::query();
-        $query->where('send_id',$send_id); 
-        $query->where('recieve_id',$id);
+        $query =  Message::where(function($query) use ($send_id, $id) {
+            $query->where('send_id',$send_id)
+                ->Where('recieve_id', $id); 
+        })->orwhere(function($query) use ($send_id, $id) {
+            $query->where('recieve_id',$send_id)
+                ->Where('send_id', $id);
+        });
         $messages = $query->get();
         return $messages;
     }
@@ -107,13 +111,6 @@ class MessageController extends Controller
 
     public function send(MessageRequest $request, $id)
     {
-        
-        // $message = new Message;
-        // $user = User::find($id);
-        // $request->user()->send()->attach($user);
-        // $message->fill($request->all());
-        // $message->save();
-
         $message = new Message;
         $user = User::find($id);
         $message->fill($request->all());

@@ -6,17 +6,17 @@
                 <v-container>
                     <div class="message-item-wrapper">
                         <div 
-                        class="send-item"
-                        v-for="(send, id) in sends" :key="id"
+                        v-for="(message, id) in messages" :key="id"
+                        :class="message.send_id === user.id  ? 'send-item' : 'receive-item'"
                         >
-                        <v-avatar size="40" class="ml-2 mr-2">
-                            <img src="https://cdn.vuetifyjs.com/images/john.jpg">
-                        </v-avatar>
-                        <div>
-                            <span class="message-name">{{send.name}}</span>
-                            <p class="message-sentence">{{send.message}}</p>
-                        </div>
-                        <span class="message-date">05/08/16:00</span>
+                            <v-avatar size="40" class="ml-2 mr-2">
+                                <img src="https://cdn.vuetifyjs.com/images/john.jpg">
+                            </v-avatar>
+                            <div>
+                                <span class="message-name">{{newMember(message.send_id)}}</span>
+                                <p class="message-sentence">{{message.message}}</p>
+                            </div>
+                            <span class="message-date">{{message.created_at}}</span>
                         </div>
                     </div>
                 </v-container>
@@ -42,51 +42,15 @@
 
 <script>
 import Header from '~/components/Header.vue'
+
+import { mapActions, mapGetters, mapState } from 'vuex';
+
 export default {
     components:{
         Header,
     },
     data(){
         return{
-            sends:[
-                {
-                    id:1,
-                    userid:1,
-                    message:'ダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミー',
-                    name:'seiya'
-                },
-                {
-                    id:2,
-                    userid:2,
-                    message:'ダミーダミーダミー',
-                    name:'user'
-                },
-                {
-                    id:3,
-                    userid:2,
-                    message:'ダミーダミーダミー',
-                    name:'user'
-                },
-                
-                {
-                    id:4,
-                    userid:1,
-                    message:'ダミーダミーダミー',
-                    name:'seiya'
-                },
-                {
-                    id:5,
-                    userid:2,
-                    message:'ダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミー',
-                    name:'user'
-                },
-                {
-                    id:6,
-                    userid:1,
-                    message:'ダミーダミーダミー',
-                    name:'seiya'
-                },
-            ],
             isView:false,
             message:{
                 id:this.$route.params.id,
@@ -96,20 +60,36 @@ export default {
     },
     created(){
         this.judgeType
+        this.$store.dispatch('message/show',this.$route.params.id);
+        this.$store.dispatch('users/loadMembers');
+        console.log(this.$route.params.id);
     },
     computed:{
         judgeType(){
             if(this.userid === 1){
             this.isView = true
             }
-        }
-
+        },
+        ...mapState('message', [
+            'messages',
+        ]),
+        ...mapState('users', [
+            'members',
+        ]),
     },
     methods:{
         async postMessages(){
             await this.$store.dispatch('message/postMessages', this.message);
             this.message.text = '';
-        }
+            this.$router.go({path: this.$router.currentRoute.path, force: true})
+        },
+        newMember (userId) {
+            const idx = this.members.findIndex(p => p.id == userId)
+            if(idx < 0){
+                return ''
+            }
+            return this.members[idx].name
+        },
     }
 }
 </script>

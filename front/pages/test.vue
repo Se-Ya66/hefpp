@@ -1,51 +1,154 @@
-<template>
+<<template>
     <div>
-        <v-text-field 
-        :rules="[rules.counter3]"
-        maxlength="300"
-        counter
-        v-model="word"
-        />
-        <p>{{word}}</p>
-        <button @click="check">click</button>
+        <div class="message-wrapper">
+            <div class="message-inner">
+                <v-container>
+                    <div class="message-item-wrapper">
+                        <div
+                        :class="post.send_id === 1 ? 'send-item' : 'receive-item'"
+                        v-for="(post, id) in posts" :key="id"
+                        >
+                        <v-avatar size="40" class="ml-2 mr-2">
+                            <img src="https://cdn.vuetifyjs.com/images/john.jpg">
+                        </v-avatar>
+                        <div>
+                            <span class="message-name">{{post.name}}</span>
+                            <p class="message-sentence">{{post.message}}</p>
+                        </div>
+                        </div>
+                    </div>
+                </v-container>
+            </div>
+            <div class="send-form-wrapper">
+                <div class="message-form">
+                    <v-textarea
+                    background-color="white"
+                    outlined
+                    v-model="message.text"
+                    />
+                    <v-btn
+                    class="ml-4"
+                    @click="postMessages"
+                    >
+                        送信
+                    </v-btn>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
 
 export default {
+    
     data(){
         return{
-            rules: {
-                required: value => !!value || ' 必須項目です',
-                counter: value => value.length >= 3 || '3文字以上で指定してください',
-                counter2: value => value.length >= 8 || '8文字以上で指定してください',
-                counter3: value => value.length <= 300 || '300文字以上で指定してください',
-                email: value => {
-                    const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-                    return pattern.test(value) || '有効なメールアドレスを指定してください'
-                },
+            isView:false,
+            message:{
+                id:'',
+                text:''
             },
-            word:''
-        }
-    },
-    created () {
+            posts:[
+                {
+                    id:1,
+                    message:'hi',
+                    name:'taro',
+                    send_id:1
+                },
+                {
+                    id:2,
+                    message:'hi',
+                    name:'jiro',
+                    send_id:2
+                },
+                {
+                    id:3,
+                    message:'hello',
+                    name:'taro',
+                    send_id:1
+                },
+                {
+                    id:4,
+                    message:'hello',
+                    name:'jiro',
+                    send_id:2
+                },
 
-    },
-    methods: {
-        check(){
-            console.log(this.word);
+            ]
         }
+    },
+    created(){
+        
     },
     computed:{
         
-        
-        
     },
-    
+    methods:{
+        postMessages(){
+
+        }
+    }
 }
 </script>
 
 <style lang="scss">
-
+.message-wrapper{
+    padding:$page-pt 0;
+    width:100%;
+    height:100vh;
+    background-color: grey;
+    position:relative;
+    .message-inner{
+        width:50%;
+        background-color: white;
+        border-radius: 5px;
+        margin: 0 auto;
+        height:60vh;
+        overflow:scroll;
+        .message-item-wrapper{
+        .send-item,
+        .receive-item
+        {
+            display: flex;
+            align-items: flex-end;
+            width:100%;
+            .message-name{
+                color:$grey;
+                font-weight:bold;
+            }
+            .message-sentence{
+                padding: 9px 12px;
+                border-radius: 18px;
+                max-width: 336px;
+                font-size: 14px;
+                line-height: 18px;
+                color: #24282A;
+                background-color: #f9f9f9;
+                word-break: break-all;
+            }
+            .message-date{
+                font-size:0.6rem;
+            }
+        }
+        .send-item{
+            flex-direction: row-reverse;
+        }
+        
+        }
+        
+    }
+    .send-form-wrapper{
+        // position:absolute;
+        // bottom:0;
+        width:40%;
+        // right:0;
+        // left:0;
+        // height:10vh;
+        margin:10px auto 0;
+        .message-form{
+            display: flex;
+        }
+    }
+}
 </style>
