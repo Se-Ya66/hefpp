@@ -69,5 +69,8 @@ class User extends Authenticatable implements JWTSubject
         return $this->followings->count();
     }
 
-    
+    public function sendings(): BelongsToMany
+    {
+        return $this->belongsToMany('App\Models\User', 'messages', 'recieve_id', 'send_id')->withTimestamps();
+    }
 }

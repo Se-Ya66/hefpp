@@ -4,7 +4,7 @@
             <div class="message-inner">
                 <v-container>
                     <div class="message-item-wrapper">
-                        <div
+                        <!-- <div
                         :class="post.send_id === 1 ? 'send-item' : 'receive-item'"
                         v-for="(post, id) in posts" :key="id"
                         >
@@ -15,11 +15,12 @@
                             <span class="message-name">{{post.name}}</span>
                             <p class="message-sentence">{{post.message}}</p>
                         </div>
-                        </div>
+                        </div> -->
                     </div>
                 </v-container>
             </div>
             <div class="send-form-wrapper">
+                        <button @click="createObject">click</button>
                 <div class="message-form">
                     <v-textarea
                     background-color="white"
@@ -52,29 +53,24 @@ export default {
             posts:[
                 {
                     id:1,
-                    message:'hi',
-                    name:'taro',
-                    send_id:1
+                    send_id:1,
+                    receive_id:2,
                 },
                 {
                     id:2,
-                    message:'hi',
-                    name:'jiro',
-                    send_id:2
+                    send_id:2,
+                    receive_id:1,
                 },
                 {
                     id:3,
-                    message:'hello',
-                    name:'taro',
-                    send_id:1
+                    send_id:1,
+                    receive_id:2,
                 },
                 {
                     id:4,
-                    message:'hello',
-                    name:'jiro',
-                    send_id:2
+                    send_id:2,
+                    receive_id:1,
                 },
-
             ]
         }
     },
@@ -87,6 +83,15 @@ export default {
     methods:{
         postMessages(){
 
+        },
+        createObject(){
+            const result = this.posts.filter((element, index, self) => 
+            self.findIndex(e => 
+                e.send_id === element.send_id &&
+                e.receive_id === element.receive_id
+                ) === index
+            );
+            console.log(JSON.stringify(result, null, 2));
         }
     }
 }

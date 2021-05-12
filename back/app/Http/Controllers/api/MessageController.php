@@ -119,4 +119,12 @@ class MessageController extends Controller
         $message->save();
 
     }
+
+    public function sendings ($id)
+    {
+        $user = User::find($id);
+        return [
+            'user' =>$user->sendings
+        ];
+    }
 }

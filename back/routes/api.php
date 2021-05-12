@@ -50,3 +50,4 @@ Route::put('/{password}/change','Auth\ChangePasswordController@update');
 Route::resource('/messages', 'MessageController', ['except' => ['create', 'edit', 'destroy', 'index', 'update']]);
 
 Route::post('/{message}/messages', 'MessageController@send');
+Route::get('/{message}/sendings', 'MessageController@sendings');

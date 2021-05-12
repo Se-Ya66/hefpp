@@ -15,4 +15,9 @@ class Message extends Model
     {
         return $this->belongsToMany('App\Models\User', 'messages', 'recieve_id', 'send_id')->withTimestamps();
     }
+
+    public function sendings(): BelongsToMany
+    {
+        return $this->belongsToMany('App\Models\User', 'messages', 'recieve_id', 'send_id')->withTimestamps();
+    }
 }
