@@ -5,3 +5,24 @@
 
 $page-pt:80px;
 $grey:#9da0a4;
+
+$tab: 1024px; 
+$sp: 599px;  
+$sp2: 600px;  
+
+@mixin sp2 {
+    @media (min-width: ($sp2)) {
+        @content;
+    }
+}
+@mixin tab {
+    @media (max-width: ($tab)) {
+        @content;
+    }
+}
+@mixin sp {
+    @media (max-width: ($sp)) {
+        @content;
+    }
+}
+

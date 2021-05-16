@@ -1,16 +1,16 @@
 <template>
   <div class="top-wrapper">
     <v-container>
-      <v-row justify="space-around" align="center" class="top-inner">
-        <v-col cols="12" sm="3" md="3" lg="5">
+      <v-row justify="center" align="center" class="top-inner">
+        <v-col  sm="12" md="6" lg="6">
           <div class="word-box">
-          <img src="../static/logo2.png">
-          <h1>ダミーダミーダミーダミー
-          </h1>
-          <p>ダミーダミーダミーダミーダミーダミーダミー<br>ダミーダミーダミーダミーダミーダミーダミー</p>
-        </div>
+            <img src="../static/logo2.png">
+            <h1>ダミーダミーダミーダミー
+            </h1>
+            <p>ダミーダミーダミーダミーダミーダミーダミー<br>ダミーダミーダミーダミーダミーダミーダミー</p>
+          </div>
         </v-col>
-        <v-col cols="12" sm="3" md="3" lg="4">
+        <v-col cols="11" sm="6" md="6" lg="4">
           <div class="form-wrapper">
             <img src="../static/logo4.png" >
             <v-form>
@@ -85,19 +85,23 @@ export default {
     .word-box{
       color:white;
       text-align: center;
+      @include sp {
+        display:none;
+      };
       img{
         width:200px;
+        margin: 0 auto;
       }
       h1{
         font-size: 36px;
-        text-align: left;
+        text-align: center;
       }
       p{
         font-weight: 600;
         font-size: 18px;
         line-height: 2;
         letter-spacing: 0.56px;
-        text-align: left;
+        text-align: center;
       }
     }
     .form-wrapper{
@@ -106,6 +110,7 @@ export default {
       text-align: center;
       img{
         opacity: 0.6;
+        margin: 0 auto;
       }
       .v-btn{
         margin: 20px;

@@ -2,14 +2,14 @@
     <div>
         <div class="user-wrapper">
             <v-card class="user-top pa-6">
-                <v-container class="px-13">
-                    <v-row justify="center" no-gutters>
-                        <v-col cols="2" sm="2" md="2" lg="2" class="text-center">
-                            <v-avatar size="100">
+                <v-container>
+                    <div class="uer-top-inner">
+                        <div class="mr-6">
+                            <v-avatar size="70">
                                 <img src="https://cdn.vuetifyjs.com/images/john.jpg">
                             </v-avatar>
-                        </v-col>
-                        <v-col cols="8" sm="8" md="8" lg="8" >
+                        </div>
+                        <div>
                             <h1>{{member.name}}</h1>
                             <div class="user-box">
                                 <span class="user-type">{{profile.type}}</span>
@@ -29,8 +29,8 @@
                                 </span>
                             </div>
                             <follow-button :userId="$route.params.id"/>
-                        </v-col>
-                    </v-row>
+                        </div>
+                    </div>
                 </v-container>
             </v-card>
             <div class="user-bottom mt-3">
@@ -195,30 +195,43 @@ export default {
     width:100%;
     padding:60px 0 $page-pt;
     .user-top{
-        h1{
-            font-size:20px;
-        }
-        .user-box{
+        width:100%;
+        .uer-top-inner{
+            width:60%;
+            margin: 0 auto;
             display: flex;
             align-items: center;
-            margin-top:10px ;
-            span:nth-child(1){
-                margin-right: 20px;
+            @include sp {
+                width:80%;
+            };
+            h1{
+                font-size:20px;
             }
-            .user-type{
-                background-color:orange ;
-                color:white;
-                padding:5px;
-                border-radius:5px;
-            }
-            .user-pre{
-                color:grey;
+            .user-box{
+                display: flex;
+                align-items: center;
+                margin-top:10px ;
+                span:nth-child(1){
+                    margin-right: 20px;
+                }
+                .user-type{
+                    background-color:orange ;
+                    color:white;
+                    padding:5px;
+                    border-radius:5px;
+                }
+                .user-pre{
+                    color:grey;
+                }
             }
         }
     }
     .user-bottom{
         width:60%;
         margin:0 auto;
+        @include sp {
+            width:80%;
+        };
         .user-item{
             margin:20px;
             h1{

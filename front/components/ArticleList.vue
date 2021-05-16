@@ -2,7 +2,7 @@
     <div>
         <div class="main-wrapper">
             <v-row justify="center" class="main-inner">
-                <v-col cols="3">
+                <v-col cols="3" sm="3" md="3" lg="3">
                     <div class="control-card">
                         <span>検索条件</span>
                         <div class="keyword-wrapper">
@@ -27,6 +27,7 @@
                             value="生産"
                             color="indigo"
                             v-model="showProduction"
+                            class="mr-3"
                             ></v-checkbox>
                             <v-checkbox
                             label="加工"
@@ -34,9 +35,8 @@
                             color="indigo"
                             v-model="showProcessing"
                             ></v-checkbox>
-                            
                         </div>
-                        <div class="checkbox-wrapper">
+                        <div class="prefecture-select-wrapper">
                             <span class="mb-2">地域</span>
                             <v-autocomplete
                             :items="items"
@@ -70,7 +70,7 @@
                         </div>
                     </div>
                 </v-col>
-                <v-col cols="6">
+                <v-col cols="11" sm="6" md="6" lg="6">
                     <div v-if="listShow">
                         <div class="article-count">
                             <span>{{result.length}}/{{articles.length}}件</span>
@@ -116,6 +116,102 @@
                 </v-col>
             </v-row>
         </div>
+        <div class="sp-search-wrapper">
+            <v-btn
+            icon
+            to="/article/post"
+            >
+                <v-icon>
+                    mdi-lead-pencil
+                </v-icon>
+            </v-btn>
+            <v-btn
+            icon
+            @click="show=true"
+            >
+                <v-icon>
+                    mdi-magnify
+                </v-icon>
+            </v-btn>
+        </div>
+        <transition name="confirm">
+            <div class="bg" v-show="show">
+                <div 
+                class="bg-inner2"
+                width="100%"
+                >
+                    <v-btn
+                    icon
+                    class="close-btn"
+                    @click="show=false"
+                    >
+                        <v-icon>
+                            mdi-close
+                        </v-icon>
+                    </v-btn>
+                    <div class="control-card">
+                        <span>検索条件</span>
+                        <div class="keyword-wrapper">
+                            <v-text-field 
+                            label="キーワードで検索" 
+                            color="indigo" 
+                            v-model="keyword"
+                            clearable
+                            class="mr-2"
+                            />
+                            <v-btn
+                            small
+                            @click=wordSearch
+                            >
+                                検索
+                            </v-btn>
+                        </div>
+                        <div class="checkbox-wrapper mb-4">
+                            <span>種別</span>
+                            <v-checkbox
+                            label="生産"
+                            value="生産"
+                            color="indigo"
+                            v-model="showProduction"
+                            class="mr-3 mt-7"
+                            ></v-checkbox>
+                            <v-checkbox
+                            label="加工"
+                            value="加工"
+                            color="indigo"
+                            v-model="showProcessing"
+                            class="mt-7"
+                            ></v-checkbox>
+                        </div>
+                        <div class="prefecture-select-wrapper">
+                            <span class="mb-2">地域</span>
+                            <v-autocomplete
+                            :items="items"
+                            color="indigo"
+                            outlined
+                            small-chips
+                            deletable-chips
+                            clearable
+                            v-model="showPrefecture"
+                            ></v-autocomplete>
+                            <v-btn
+                            small
+                            @click=searchType
+                            class="mr-2"
+                            >
+                                検索
+                            </v-btn>
+                            <v-btn
+                            small
+                            @click=resetList
+                            >
+                                リセット
+                            </v-btn>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </transition>
     </div>
 </template>
 
@@ -130,6 +226,7 @@ export default {
             showPrefecture: '',
             showProduction: '',
             showProcessing:'',
+            show:false,
             items:[
                 '北海道',
                 '青森',
@@ -209,7 +306,6 @@ export default {
                 if (this.showProcessing && this.$store.state.article.articles[i].type == "加工") {
                     isShow = true;
                 }
-                
                 if (this.showPrefecture) {
                     if (this.showPrefecture == this.$store.state.article.articles[i].prefecture) {
                         isShow = true;
@@ -217,7 +313,6 @@ export default {
                         isShow = false
                     }
                 }
-
                 if (isShow) {
                     this.result.push(this.$store.state.article.articles[i]);
                 }
@@ -233,37 +328,10 @@ export default {
             this.showProduction= '';
             this.showProcessing='';
         },
-        // wordSearch(){
-        //     this.result = [];
-        //     this.listShow = true;
-        //     if(this.keyword){
-        //         for(let i in this.$store.state.article.articles) {
-        //             let article = this.$store.state.article.articles[i];
-        //             if(article.body.includes(this.keyword)) {
-        //                 this.result.push(article);
-        //             }
-        //             if(article.title.includes(this.keyword)) {
-        //                 this.result.push(article);
-        //             }
-        //         }
-        //     }
-        //     this.keyword = '';
-        //     return this.result;
-        // },
+        
         wordSearch(){
             this.result = [];
             this.listShow = true;
-            // if(this.keyword){
-            //     for(let i in this.$store.state.article.articles) {
-            //         let article = this.$store.state.article.articles[i];
-            //         if(article.body.includes(this.keyword)) {
-            //             this.result.push(article);
-            //         }
-            //         if(article.title.includes(this.keyword)) {
-            //             this.result.push(article);
-            //         }
-            //     }
-            // }
             for(let i=0; i<this.$store.state.article.articles.length; i++){
                 let isShow = false;
                 if (this.keyword) {
@@ -296,54 +364,6 @@ export default {
         ...mapState('profile', [
             'profiles',
         ]),
-        // filteredList() {
-        //     let newList = [];   
-        //     for(let i=0; i<this.$store.state.article.articles.length; i++){
-        //         let isShow = false;
-        //         if (this.showProcessing && this.showProduction) {
-        //             return
-        //         }
-        //         if (this.showProduction && this.$store.state.article.articles[i].type == "生産") {
-        //             isShow = true;
-        //         }
-        //         if (this.showProcessing && this.$store.state.article.articles[i].type == "加工") {
-        //             isShow = true;
-        //         }
-                
-        //         if (this.showPrefecture) {
-        //             if (this.showPrefecture == this.$store.state.article.articles[i].prefecture) {
-        //                 isShow = true;
-        //             } else {
-        //                 isShow = false
-        //             }
-        //         }
-
-        //         if (isShow) {
-        //             this.result.push(this.$store.state.article.articles[i]);
-                    
-        //         }
-        //     }
-            
-
-        //     return this.result;
-        // },
-        // filteredList() {
-        //     if (this.showProcessing && this.showProduction) {
-        //         return
-        //     }
-        //     if(this.showProduction){
-        //         this.articles.forEach(article =>{
-        //             if(article.type === '生産'){
-        //                 this.result.push(article);
-        //             }
-        //         })
-        //     }
-        //     if(!this.showProcessing && !this.showProduction && !this.showPrefecture ){
-        //         this.articles = this.result;
-        //     } 
-        // },
-        
-        
         
     },
     
@@ -358,16 +378,21 @@ export default {
         width:100%;
         .control-card{
             padding:20px 0;
+            @include sp {
+                display:none;
+            };
             .keyword-wrapper{
                 display:flex;
                 align-items: center;
             }
             .checkbox-wrapper{
                 margin-bottom:10px;
+                display:flex;
             }
             .post-btn-wrapper{
                 border-top:2px solid #f5f5f5;
                 padding-top:10px;
+                margin-top:10px;
                 .post-btn{
                     background: linear-gradient(to right, #3a7bd5, #00d2ff);
                     height: 80px;
@@ -420,6 +445,48 @@ export default {
                     }
                 }
             }
+        }
+    }
+}
+.sp-search-wrapper{
+    position:fixed;
+    bottom:10px;
+    right:10px;
+    z-index:999;
+    @include sp2 {
+        display:none;
+    };
+}
+.bg{
+    width:100%;
+    height:100%;
+    position: fixed;
+    top:0;
+    left:0;
+    z-index:999;
+    padding:10px;
+    background: rgba(0,0,0,0.7);
+    .bg-inner2{
+        width:80%;
+        max-height:80%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateY(-50%) translateX(-50%);
+        background:white;
+        background-blend-mode: multiply;
+        padding:40px;
+        text-align: center;
+        font-size: 1.2rem;
+        .checkbox-wrapper{
+            margin-bottom:10px;
+            display:flex;
+            padding-top: 10px ;
+        }
+        .close-btn{
+            position: absolute;
+            top:10px;
+            right:10px;
         }
     }
 }

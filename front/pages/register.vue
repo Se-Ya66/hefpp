@@ -90,6 +90,12 @@
     top: 50%;
     left: 50%;
     transform: translateY(-50%) translateX(-50%);
+    @include sp {
+      width:80%;
+    };
+    @include tab {
+      width:80%;
+    };
     .form-wrapper{
       background:rgba(192, 192, 192, 0.2);
       padding: 40px;
