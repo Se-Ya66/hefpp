@@ -2,20 +2,27 @@
     <div>
         <Header />
         <div class="message-list-wrapper">
-            <h1>メッセージ一覧</h1>
+            <h1>メッセージ一中のユーザー</h1>
+            <div class="message-list-inner">
             <v-container>
-                <div 
-                v-for="(sending, id) in createList" :key="id" 
-                class="send-item"
-                >
-                    <nuxt-link :to="`/user/${sending.id}`">
-                        <v-avatar size="100">
-                            <img src="https://cdn.vuetifyjs.com/images/john.jpg">
-                        </v-avatar>
-                    </nuxt-link>
-                    <span>{{sending.name}}</span>
-                </div>
+                <v-row>
+                    <v-col 
+                    v-for="(sending, id) in createList" :key="id" 
+                    cols="6" sm="4" md="4" lg="4"
+                    class="message-user-list"
+                    >
+                        <nuxt-link :to="`/message/${sending.id}`">
+                            <v-avatar size="100">
+                                <img src="https://cdn.vuetifyjs.com/images/john.jpg">
+                            </v-avatar>
+                        </nuxt-link>
+                        <p>{{sending.name}}</p>
+                        <!-- <v-card>
+                        </v-card> -->
+                    </v-col>
+                </v-row>
             </v-container>
+            </div>
         </div>
         <Footer />
     </div>
@@ -63,8 +70,23 @@ export default {
 <style lang="scss">
 .message-list-wrapper{
     padding:$page-pt 0;
+    width:100%;
     h1{
         text-align: center;
+    }
+    .message-list-inner{
+        width:80%;
+        margin: 0 auto;
+        @include sp {
+            width:100%;
+        };
+        .message-user-list{
+            text-align: center;
+            p{
+                padding: 10px;
+                font-size:1.3rem;
+            }
+        }
     }
 }
 </style>

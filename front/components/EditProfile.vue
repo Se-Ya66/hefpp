@@ -1,16 +1,10 @@
 <template>
     <div class="edit-profile-wrapper">
-        <div class="edit-profile-inner pa-6">
-            <v-toolbar
-            flat
-            color="white"
-            dark
-            >
-                <h1 class="profile-title">プロフィール変更</h1>
-            </v-toolbar>
+        <div class="edit-profile-inner ">
             <v-tabs 
             color="indigo"
-            vertical>
+            centered
+            >
                 <v-tab>
                     基本情報
                 </v-tab>
@@ -18,9 +12,10 @@
                     プロフィール 
                 </v-tab>
                 <v-tab-item>
-                    <v-card flat>
+                    <!-- <v-card flat>
+                    </v-card> -->
                         <v-form ref="info_form">
-                            <div class="edit-form">
+                            <div class="edit-profile-form">
                                 <h1>名前</h1>
                                 <v-container>
                                     <v-text-field 
@@ -30,7 +25,7 @@
                                     />
                                 </v-container>
                             </div>
-                            <div class="edit-form">
+                            <div class="edit-profile-form">
                                 <h1>メールアドレス</h1>
                                 <v-container>
                                     <v-text-field 
@@ -76,7 +71,7 @@
                             </div>
                         </transition>
                         <v-form ref="password_form">
-                            <div class="edit-form">
+                            <div class="edit-profile-form">
                                 <h1>現在のパスワード</h1>
                                 <v-container>
                                 <v-text-field 
@@ -85,7 +80,7 @@
                                 />
                                 </v-container>
                             </div>
-                            <div class="edit-form">
+                            <div class="edit-profile-form">
                                 <h1>新しいパスワード</h1>
                                 <v-container>
                                 <v-text-field 
@@ -104,20 +99,19 @@
                         >
                             変更
                         </div>
-                    </v-card>
                 </v-tab-item>
                 <v-tab-item>
                     <v-card flat>
                         <v-container >
                             <v-form ref="profile_form">
-                                <div class="edit-form">
+                                <div class="edit-profile-form">
                                     <h1>プロフィール写真</h1>
                                     <v-container>
                                         <v-text-field 
                                         outlined/>
                                     </v-container>
                                 </div>
-                                <div class="edit-form">
+                                <div class="edit-profile-form">
                                     <h1>種別</h1>
                                     <v-container>
                                         <v-radio-group
@@ -135,7 +129,7 @@
                                         </v-radio-group>
                                     </v-container>
                                 </div>
-                                <div class="edit-form">
+                                <div class="edit-profile-form">
                                     <h1>都道府県</h1>
                                     <v-container>
                                     <v-select
@@ -145,7 +139,7 @@
                                     />
                                     </v-container>
                                 </div>
-                                <div class="edit-form">
+                                <div class="edit-profile-form">
                                     <h1>URL</h1>
                                     <v-container>
                                     <v-text-field 
@@ -154,7 +148,7 @@
                                     />
                                     </v-container>
                                 </div>
-                                <div class="edit-form">
+                                <div class="edit-profile-form">
                                     <h1>住所</h1>
                                     <v-container>
                                     <v-text-field 
@@ -163,7 +157,7 @@
                                     />
                                     </v-container>
                                 </div>
-                                <div class="edit-form">
+                                <div class="edit-profile-form">
                                     <h1>電話番号</h1>
                                     <v-container>
                                     <v-text-field 
@@ -173,32 +167,14 @@
                                     />
                                     </v-container>
                                 </div>
-                                <div class="edit-form edit-introduction">
+                                <div class="edit-profile-form edit-introduction">
                                     <h1>紹介</h1>
                                     <v-container>
                                     <v-textarea 
                                     outlined
                                     v-model="myprofile.introduction"
-                                    
-                                    maxlength="300"
                                     counter
                                     />
-                                    </v-container>
-                                </div>
-                                <div class="edit-form">
-                                    <h1>制作物</h1>
-                                    <v-container>
-                                    <div>
-                                        <v-card max-width="344">
-                                            <img src="../static/juice.jpg" alt="">
-                                            <v-card-title>
-                                            ダミー
-                                            </v-card-title>
-                                            <v-card-subtitle>
-                                            ダミーダミーダミーダミー
-                                            </v-card-subtitle>
-                                        </v-card>
-                                    </div>
                                     </v-container>
                                 </div>
                             </v-form>
@@ -413,16 +389,20 @@ export default {
 
 <style lang="scss">
 .edit-profile-wrapper{
-    width:80%;
+    // width:80%;
+    width:90%;
     margin: 0 auto;
     padding:$page-pt 0;
     .edit-profile-inner{
         h1{
             font-size:20px;
         }
-        .edit-form{
+        .edit-profile-form{
             width:30%;
             margin:0 auto;
+            @include sp {
+                width:80%;
+            };
             h1{
                 color:$grey;
             }

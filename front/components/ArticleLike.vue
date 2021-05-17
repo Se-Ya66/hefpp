@@ -17,7 +17,7 @@
                 mdi-thumb-up
             </v-icon>
         </v-btn>
-        <span>いいね数：{{num}}</span>
+        <span>{{num}}</span>
     </div>
 </template>
 

@@ -34,7 +34,9 @@
                 </v-container>
             </v-card>
             <div class="user-bottom mt-3">
-                <v-tabs>
+                <v-tabs
+                color="indigo"
+                centered>
                     <v-tab>
                         プロフィール
                     </v-tab>
@@ -54,22 +56,6 @@
                                 <v-container>
                                 <div>
                                     {{profile.introduction}}
-                                </div>
-                                </v-container>
-                            </div>
-                            <div class="user-item">
-                                <h1>制作物</h1>
-                                <v-container>
-                                <div>
-                                    <v-card max-width="344">
-                                        <img src="../static/juice.jpg" alt="">
-                                        <v-card-title>
-                                        ダミー
-                                        </v-card-title>
-                                        <v-card-subtitle>
-                                        ダミーダミーダミーダミー
-                                        </v-card-subtitle>
-                                    </v-card>
                                 </div>
                                 </v-container>
                             </div>
@@ -117,16 +103,20 @@
                                     <v-row>
                                         <v-col 
                                         v-for="(article, id) in myArticles" :key="id"
-                                        cols="6"
+                                        cols="10" sm="10" md="12" lg="12"
                                         >
                                             <v-card
-                                            class="pa-2"
+                                            class="recruit-card pa-2"
                                             tile
                                             :to="`/article/${article.id}`"
                                             >
                                                 <img src="../static/sample.jpg" class="article-img">
-                                                <v-card-title>{{article.title}}</v-card-title>
-                                                <v-card-text>{{article.body}}</v-card-text>
+                                                    <h2 class="card-title">
+                                                        {{article.title}}
+                                                    </h2>
+                                                    <p class="card-body">
+                                                        {{article.body}}
+                                                    </p>
                                             </v-card>
                                         </v-col>
                                     </v-row>
@@ -230,10 +220,24 @@ export default {
         width:60%;
         margin:0 auto;
         @include sp {
-            width:80%;
+            width:90%;
         };
         .user-item{
             margin:20px;
+            .recruit-card{
+                height:200px;
+                .card-title{
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    padding: 10px 10px 10px 0;
+                }
+                .card-body{
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+            }
             h1{
                 font-size:1.5rem;
                 color: #9da0a4;
@@ -243,6 +247,8 @@ export default {
             }
             img{
                 width:100%;
+                height:60%;
+                object-fit: cover;
             }
             .recruit-item{
                 max-width:400px;

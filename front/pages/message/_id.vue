@@ -27,6 +27,7 @@
                     background-color="white"
                     outlined
                     v-model="message.text"
+                    height="70"
                     />
                     <v-btn
                     class="ml-4"
@@ -106,8 +107,11 @@ export default {
         background-color: white;
         border-radius: 5px;
         margin: 0 auto;
-        height:60vh;
+        height:90%;
         overflow:scroll;
+        @include sp {
+            width:80%;
+        };
         .message-item-wrapper{
         .send-item,
         .receive-item
@@ -141,13 +145,12 @@ export default {
         
     }
     .send-form-wrapper{
-        // position:absolute;
-        // bottom:0;
         width:40%;
-        // right:0;
-        // left:0;
-        // height:10vh;
         margin:10px auto 0;
+        // height:40vh;
+        @include sp {
+            width:80%;
+        };
         .message-form{
             display: flex;
         }

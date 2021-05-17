@@ -20,7 +20,7 @@
                 <v-container>
                     <div class="article-bottom-wrapper">
                         <v-row justify="space-between">
-                            <v-col cols="9">
+                            <v-col cols="8" sm="9" md="9" lg="9">
                                 <div class="article-detail-sentence">
                                     <h2>詳細</h2>
                                     <p>
@@ -32,7 +32,7 @@
                                     </p>
                                 </div>
                             </v-col>
-                            <v-col cols="2">
+                            <v-col cols="4" sm="2" md="2" lg="2">
                                 <div class="like-btn">
                                     <article-like :post="article"/>
                                 </div>
@@ -83,6 +83,9 @@ export default {
     .article-title{
         margin:10px 0;
         font-size:1.5rem;
+        @include sp {
+            font-size:1.2rem;
+        };
     }
     .article-user{
         display: flex;
@@ -92,16 +95,25 @@ export default {
                 font-size:1.1rem;
                 color:$grey;
                 font-weight:bold;
+                @include sp {
+                    font-size:0.8rem;
+                };
             }
             .article-user-prefecture{
                 font-size:1rem;
+                @include sp {
+                    font-size:0.6rem;
+                };
             }
         }
     }
     .article-img{
         width:100%;
-        height:400px;
+        height:200px;
         object-fit: cover;
+        @include sp {
+            height:100px;
+        };
     }
     .article-bottom-wrapper{
         .article-detail-sentence{
@@ -109,9 +121,15 @@ export default {
                 font-size:1.4rem;
                 margin-bottom: 10px;
                 color:$grey;
+                @include sp {
+                    font-size:1rem;
+                };
             }
             p{
                 font-size:1.1rem;
+                @include sp {
+                    font-size:0.8rem;
+                };
             }
         }
     }

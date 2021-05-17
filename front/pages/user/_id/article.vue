@@ -3,20 +3,24 @@
         <Header />
         <div class="my-article-wrapper">
             <v-container>
-                <v-row>
+                <v-row >
                     <v-col 
                     v-for="(article, id) in myArticles" :key="id"
-                    cols="4"
+                    cols="12" sm="4" md="4" lg="4"
                     >
                         <v-card
                         class="pa-2 article-card"
                         tile
                         >
                             <nuxt-link :to="`/article/${article.id}`">
-                                <img src="../../../static/sample.jpg" class="article-img">
+                                <img src="../../../static/sample.jpg" class="user-article-img">
                             </nuxt-link>
-                            <v-card-title>{{article.title}}</v-card-title>
-                            <v-card-text>{{article.body}}</v-card-text>
+                            <h2 class="card-title">
+                                {{article.title}}
+                            </h2>
+                            <p class="card-body">
+                                {{article.body}}
+                            </p>
                             <v-menu
                             top
                             offset-x>
@@ -132,15 +136,28 @@ export default {
     font-size: 1.1rem;
     .article-card{
         position: relative;
+        height:300px;
+        .card-title{
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 10px 10px 10px 0;
+        }
+        .card-body{
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
         .edit-dots-btn{
             position:absolute;
             bottom:5px;
             right:5px;
         }
-    }
-    .article-img{
-        width:100%;
-        object-fit: cover;
+        .user-article-img{
+            width:100%;
+            height:50%;
+            object-fit: cover;
+        }
     }
     .delete-btn{
         background: linear-gradient(to right, #BD3F32, #CB356B);

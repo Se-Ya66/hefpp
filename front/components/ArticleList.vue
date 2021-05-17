@@ -97,7 +97,9 @@
                             <span>{{articles.length}}/{{articles.length}}件</span>
                         </div>
                         <div class="article-item" v-for="(article, id) in articles" :key="id">
-                            <img src="../static/sample.jpg" class="article-img">
+                            <nuxt-link :to="`/article/${article.id}`">
+                                <img src="../static/sample.jpg" class="article-img">
+                            </nuxt-link>
                             <span class="user-type-production">{{article.type}}</span>
                             <h2 class="mt-2 mb-2">{{article.title}}</h2>
                             <p>{{article.body}}</p>
@@ -110,7 +112,6 @@
                                     <span>{{article.prefecture}}</span>
                                 </div>
                             </div>
-                            <nuxt-link :to="`/article/${article.id}`">詳細</nuxt-link>
                         </div>
                     </div>
                 </v-col>
