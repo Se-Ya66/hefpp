@@ -2,7 +2,7 @@
     <div>
         <Header />
         <div class="message-list-wrapper">
-            <h1>メッセージ一中のユーザー</h1>
+            <h1>メッセージ中のユーザー</h1>
             <div class="message-list-inner">
             <v-container>
                 <v-row>
@@ -17,8 +17,6 @@
                             </v-avatar>
                         </nuxt-link>
                         <p>{{sending.name}}</p>
-                        <!-- <v-card>
-                        </v-card> -->
                     </v-col>
                 </v-row>
             </v-container>

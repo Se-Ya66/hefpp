@@ -173,7 +173,6 @@
                                     <v-textarea 
                                     outlined
                                     v-model="myprofile.introduction"
-                                    counter
                                     />
                                     </v-container>
                                 </div>
@@ -415,53 +414,8 @@ export default {
         .edit-introduction{
             width:50%;
         }
-        .edit-btn{
-            background: linear-gradient(to right, #3a7bd5, #00d2ff);
-            height: 40px;
-            width:100px;
-            line-height: 40px;
-            padding:2px 12px;
-            font-size: 0.8rem;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 5px;
-            cursor:pointer;
-            color:white;
-        }
         .confirm-btn{
             margin: 0 auto 20px;
-        }
-        .bg{
-            width:100%;
-            height:100%;
-            position: fixed;
-            top:0;
-            left:0;
-            z-index:999;
-            padding:10px;
-            background: rgba(0,0,0,0.7);
-            .bg-inner{
-                width:50%;
-                max-height:80%;
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translateY(-50%) translateX(-50%);
-                background:white;
-                background-blend-mode: multiply;
-                padding:40px;
-                text-align: center;
-                font-size: 1.2rem;
-                span{
-                    color:$grey;
-                    font-weight:bold;
-                }
-                .btn-wrapper{
-                    display: flex;
-                    justify-content: center;
-                    
-                }
-            }
         }
         .confirm-leave-active,
         .confirm-enter-active {

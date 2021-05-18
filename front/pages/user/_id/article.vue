@@ -61,26 +61,26 @@
                         <transition name="confirm">
                             <div class="bg" v-show="dialog">
                                 <div 
-                                class="bg-inner overflow-y-auto mx-auto my-10"
+                                class="bg-inner"
                                 width="100%"
                                 max-height="200"
                                 max-width="500"
                                 >
                                     <p class="mb-6">削除してよろしいでしょうか？</p>
-                                    <div class="btn-wrapper">
-                                        <div
-                                        class="edit-btn delete-btn"
-                                        @click="destroyArticle(article)"
-                                        >
-                                            削除
+                                        <div class="btn-wrapper">
+                                            <div
+                                            class="edit-btn delete-btn"
+                                            @click="destroyArticle(article)"
+                                            >
+                                                削除
+                                            </div>
+                                            <div
+                                            class="edit-btn ml-2"
+                                            @click="dialog=false"
+                                            >
+                                                キャンセル
+                                            </div>
                                         </div>
-                                        <div
-                                        class="edit-btn ml-2"
-                                        @click="dialog=false"
-                                        >
-                                            キャンセル
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </transition>

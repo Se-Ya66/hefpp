@@ -9,8 +9,6 @@
             label="Name"
             color="black"
             :rules="[rules.required, rules.counter]"
-            minlength="3"
-            counter
             />
             <v-text-field
             v-model="form.email"
@@ -23,8 +21,6 @@
             label="Password"
             color="black"
             :rules="[rules.required, rules.counter2]"
-            minlength="8"
-            counter
             type="password"
             />
             <v-btn
@@ -35,7 +31,11 @@
               登録
             </v-btn>
           </v-form>
-          <nuxt-link to="/">トップへ戻る</nuxt-link>
+          <nuxt-link to="/">
+            <span class="link-text">
+              トップへ戻る
+            </span>
+          </nuxt-link>
         </div>
       </div>
     </div>

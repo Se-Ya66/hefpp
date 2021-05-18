@@ -53,7 +53,7 @@
             </div>
         </v-container>
         <div class="edit-btn confirm-btn"
-        @click="dialog=true"
+        @click="confirmDialog"
         >
             確認する
         </div>
@@ -179,11 +179,14 @@ export default {
     methods:{
         async postArticles(){
             this.dialog = false
+            await this.$store.dispatch('article/postArticles', this.article);
+            this.$router.push({name: 'main'});
+        },
+        confirmDialog(){
+            this.dialog = true;
             if(this.$refs.post_form.validate()){
-                await this.$store.dispatch('article/postArticles', this.article);
-                this.$router.push({name: 'main'});
             }
-        }
+        },
     }
 }
 </script>

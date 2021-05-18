@@ -1,14 +1,17 @@
 <template>
   <div>
-    <div class="user-box">
-        <span>フォロー:{{followNum}}</span>
-        <span>フォロワー:{{followerNum}}</span>
+    <div class="follow-count-wrapper">
+        <!-- <span><span class="follow-number">{{followNum}}</span>フォロー</span>
+        <span><span class="follow-number">{{followerNum}}</span>フォロワー</span> -->
+        <span><span class="follow-number">{{followNum}}</span>フォロー</span>
+        <span><span class="follow-number">{{followerNum}}</span>フォロワー</span>
     </div>
     <div class="user-action-wrapper">
       <div v-show="show">
         <v-btn 
         v-show="!isFollowedBy"
         @click="follow"
+        icon
         >
           <v-icon>
             mdi-account-plus
@@ -18,6 +21,7 @@
         v-show="isFollowedBy"
         @click="unfollow"
         color="blue"
+        icon
         >
           <v-icon>
             mdi-account-check
@@ -28,8 +32,11 @@
       :to="`/message/${$route.params.id}`"
       v-show="show"
       class="ml-3"
+      icon
       >
-          メッセージ
+        <v-icon>
+          mdi-email-outline
+        </v-icon>
       </v-btn>
     </div>
   </div>
@@ -132,6 +139,12 @@
 </script>
 
 <style lang="scss">
+  .follow-count-wrapper{
+    .follow-number{
+      font-weight: bold;
+      font-size:1.1rem;
+    }
+  }
 .user-action-wrapper{
   display: flex;
   align-items: flex-end;

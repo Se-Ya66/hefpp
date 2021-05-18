@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="article-like-wrapper">
         <v-btn
         color="red"
         icon
@@ -17,7 +17,7 @@
                 mdi-thumb-up
             </v-icon>
         </v-btn>
-        <span>{{num}}</span>
+        <span class="like-number">{{num}}</span>
     </div>
 </template>
 
@@ -36,6 +36,9 @@ export default {
     },
     methods: {
         like() {
+            if(this.user.id === this.post.user_id){
+                return
+            }
             this.$axios.get(`/articles/${this.post.id}/like`)
             .then(res => {
                 this.liked = true;
@@ -74,6 +77,13 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss">
+.article-like-wrapper{
+    display:flex;
+    align-items: center;
+    .like-number{
+        font-weight:bold;
+        font-size:1.2rem;
+    }
+}
 </style>

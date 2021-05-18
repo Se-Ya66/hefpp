@@ -459,14 +459,6 @@ export default {
     };
 }
 .bg{
-    width:100%;
-    height:100%;
-    position: fixed;
-    top:0;
-    left:0;
-    z-index:999;
-    padding:10px;
-    background: rgba(0,0,0,0.7);
     .bg-inner2{
         width:80%;
         max-height:80%;
@@ -479,6 +471,11 @@ export default {
         padding:40px;
         text-align: center;
         font-size: 1.2rem;
+            span{
+                @include sp {
+                    font-size:0.8rem;
+                };
+            }
         .checkbox-wrapper{
             margin-bottom:10px;
             display:flex;

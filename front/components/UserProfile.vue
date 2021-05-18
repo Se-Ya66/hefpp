@@ -20,7 +20,7 @@
                                 {{profile.prefecture}}
                                 </span>
                             </div>
-                            <div class="user-box">
+                            <div class="user-box mb-2">
                                 <span>
                                     <v-icon>
                                         mdi-link-variant
@@ -192,7 +192,7 @@ export default {
             display: flex;
             align-items: center;
             @include sp {
-                width:80%;
+                width:90%;
             };
             h1{
                 font-size:20px;
@@ -213,6 +213,7 @@ export default {
                 .user-pre{
                     color:grey;
                 }
+                
             }
         }
     }
