@@ -67,6 +67,10 @@ export default {
     methods: {
         signOut() {
             this.$auth.logout();
+            this.$store.dispatch('flashMessage/showMessage',{
+                message: 'ログアウトしました',
+                status: true
+            })
         }
     },
     created () {

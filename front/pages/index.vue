@@ -5,9 +5,7 @@
         <v-col  sm="12" md="6" lg="6">
           <div class="word-box">
             <img src="../static/logo2.png">
-            <h1>ダミーダミーダミーダミー
-            </h1>
-            <p>ダミーダミーダミーダミーダミーダミーダミー<br>ダミーダミーダミーダミーダミーダミーダミー</p>
+            <p>hefppは生産者と加工者をつなぎ<br>6次産業化を支援するSNSです。</p>
           </div>
         </v-col>
         <v-col cols="11" sm="6" md="6" lg="4">
@@ -39,7 +37,7 @@
                 ログイン
               </v-btn>
             </v-form>
-            <p>ゲストユーザーでログイン</p>
+            <p>ゲストユーザーで<span class="test-login" @click="testLogin">ログイン</span></p>
             <p>アカウントをお持ちでないですか？
               <nuxt-link to="/register">新規登録</nuxt-link>
             </p>
@@ -63,12 +61,33 @@ export default {
     },
     methods: {
         async login() {
-            try {
-                await this.$auth.login({ data: this.form });
+          try {
+              await this.$auth.login({ data: this.form });
+          } catch(e) {
+              return;
+          }
+          this.$store.dispatch('flashMessage/showMessage',{
+            message: 'ログインしました',
+            status: true
+          })
+          this.$router.push({name : 'main'});
+          return false;
+        },
+        async testLogin(){
+          try {
+              await this.$auth.login({ data: {
+                email: 'test@test.co.jp',
+                password: 'testtest'
+              } });
             } catch(e) {
                 return;
             }
+            this.$store.dispatch('flashMessage/showMessage',{
+              message: 'ログインしました',
+              status: true
+            })
             this.$router.push({name : 'main'});
+            return false;
         }
     }
 }
@@ -121,6 +140,11 @@ export default {
       .error-message{
         text-align: left;
         color:red;
+      }
+      .test-login{
+        color: #1976d2;
+        text-decoration: underline;
+        cursor: pointer;
       }
     }
   }
