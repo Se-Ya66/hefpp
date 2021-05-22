@@ -75,19 +75,19 @@ export default {
         },
         async testLogin(){
           try {
-              await this.$auth.login({ data: {
-                email: 'test@test.co.jp',
-                password: 'testtest'
-              } });
-            } catch(e) {
-                return;
-            }
-            this.$store.dispatch('flashMessage/showMessage',{
-              message: 'ログインしました',
-              status: true
-            })
-            this.$router.push({name : 'main'});
-            return false;
+            await this.$auth.login({ data: {
+              email: 'test@test.co.jp',
+              password: 'testtest'
+            } });
+          } catch(e) {
+              return;
+          }
+          this.$store.dispatch('flashMessage/showMessage',{
+            message: 'ログインしました',
+            status: true
+          })
+          this.$router.push({name : 'main'});
+          return false;
         }
     }
 }

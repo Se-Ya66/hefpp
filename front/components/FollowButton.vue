@@ -1,8 +1,6 @@
 <template>
   <div>
     <div class="follow-count-wrapper">
-        <!-- <span><span class="follow-number">{{followNum}}</span>フォロー</span>
-        <span><span class="follow-number">{{followerNum}}</span>フォロワー</span> -->
         <span><span class="follow-number">{{followNum}}</span>フォロー</span>
         <span><span class="follow-number">{{followerNum}}</span>フォロワー</span>
     </div>
@@ -76,7 +74,7 @@
       canSend(){
         const num = Number(this.$route.params.id);
         if(this.user.id === num){
-            return this.show = false;
+          return this.show = false;
         }
       }
     },
@@ -84,53 +82,53 @@
       follow() {
         this.$axios.put(`/${this.userId}/follow`)
         .then(res => {
-            this.followerNum = res.data.follower_count;
-            this.isFollowedBy = true;
+          this.followerNum = res.data.follower_count;
+          this.isFollowedBy = true;
         }).catch(function(error) {
-            console.log(error);
+          console.log(error);
         });
       },
       unfollow() {
         this.$axios.delete(`/${this.userId}/follow`)
         .then(res => {
-            this.followerNum = res.data.follower_count;
-            this.isFollowedBy = false;
+          this.followerNum = res.data.follower_count;
+          this.isFollowedBy = false;
         }).catch(function(error){
-            console.log(error);
+          console.log(error);
         });
       },
       isFollowed() { 
         this.$axios.get(`/${this.userId}/follow`)
         .then(res => {
-            this.isFollowedBy = res.data.result;
-            console.log(this.isFollowedBy);
+          this.isFollowedBy = res.data.result;
+          console.log(this.isFollowedBy);
         }).catch(function(error){
-            console.log(error);
+          console.log(error);
         });
       },
       count() {
           this.$axios.get(`/follow/${this.userId}/count`)
           .then(res => {
-              this.followNum = res.data.follow_count;
-              this.followerNum = res.data.follower_count;
+            this.followNum = res.data.follow_count;
+            this.followerNum = res.data.follower_count;
           }).catch(function(error){
-              console.log(error);
+            console.log(error);
           });
       },
       followList() {
           this.$axios.get(`/${this.$route.params.id}/followings`)
           .then(res => {
-              this.followings = res.data.user;
+            this.followings = res.data.user;
           }).catch(function(error){
-              console.log(error);
+            console.log(error);
           });
       },
       followerList() {
           this.$axios.get(`/${this.$route.params.id}/followers`)
           .then(res => {
-              this.followers = res.data.user;
+            this.followers = res.data.user;
           }).catch(function(error){
-              console.log(error);
+            console.log(error);
           });
       },
       

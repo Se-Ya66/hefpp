@@ -180,6 +180,10 @@ export default {
         async postArticles(){
             this.dialog = false
             await this.$store.dispatch('article/postArticles', this.article);
+            this.$store.dispatch('flashMessage/showMessage',{
+                message: '投稿しました',
+                status: true
+            })
             this.$router.push({name: 'main'});
         },
         confirmDialog(){

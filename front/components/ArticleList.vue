@@ -75,7 +75,7 @@
                         <div class="article-count">
                             <span>{{result.length}}/{{articles.length}}件</span>
                         </div>
-                        <div class="article-item" v-for="(article, id) in result" :key="id">
+                        <div class="article-item" v-for="(article, id) in displayResult" :key="id">
                             <img src="../static/sample.jpg" class="article-img">
                             <span class="user-type-production">{{article.type}}</span>
                             <h2 class="mt-2 mb-2">{{article.title}}</h2>
@@ -91,16 +91,24 @@
                             </div>
                             <nuxt-link :to="`/article/${article.id}`">詳細</nuxt-link>
                         </div>
+                        <v-container class="max-width">
+                            <v-pagination
+                            v-model="page"
+                            :length="resultLength"
+                            @input = "resultChange"
+                            ></v-pagination>
+                        </v-container>
                     </div>
                     <div v-else>
                         <div class="article-count">
                             <span>{{articles.length}}/{{articles.length}}件</span>
                         </div>
-                        <div class="article-item" v-for="(article, id) in articles" :key="id">
+                        <div class="article-item" v-for="(article, id) in displayLists" :key="id">
                             <nuxt-link :to="`/article/${article.id}`">
                                 <img src="../static/sample.jpg" class="article-img">
                             </nuxt-link>
                             <span class="user-type-production">{{article.type}}</span>
+                            <span class="ml-3">{{article.prefecture}}</span>
                             <h2 class="mt-2 mb-2">{{article.title}}</h2>
                             <p>{{article.body}}</p>
                             <div class="article-user ">
@@ -109,10 +117,16 @@
                                 </v-avatar>
                                 <div class="article-userinfo">
                                     <span class="article-user-name">{{newMember(article.user_id)}}</span>
-                                    <span>{{article.prefecture}}</span>
                                 </div>
                             </div>
                         </div>
+                        <v-container class="max-width">
+                            <v-pagination
+                            v-model="page"
+                            :length="length"
+                            @input = "pageChange"
+                            ></v-pagination>
+                        </v-container>
                     </div>
                 </v-col>
             </v-row>
@@ -277,16 +291,24 @@ export default {
                 "鹿児島",
                 "沖縄"
             ],
-            result:[]
+            result:[],
+            displayLists:[],
+            pageSize: 5,
+            page:1,
+            length:'',
+            resultLength:'',
+            displayResult:[],
         }
     },
     created () {
         this.$store.dispatch('article/loadArticles');
         this.$store.dispatch('users/loadMembers');
         this.$store.dispatch('profile/loadProfiles');
+        this.length = Math.ceil(this.articles.length/this.pageSize);
+        this.displayLists = this.articles.slice(this.pageSize*(this.page -1), this.pageSize*(this.page));
     },
     methods: {
-        newMember (userId) {
+        newMember(userId){
             const idx = this.members.findIndex(p => p.id == userId)
             if(idx < 0){
                 return ''
@@ -321,7 +343,10 @@ export default {
             this.showPrefecture= '';
             this.showProduction= '';
             this.showProcessing='';
-            return this.result;
+            this.resultLength = Math.ceil(this.result.length/this.pageSize);
+            this.displayResult = this.result.slice(this.pageSize*(this.page -1), this.pageSize*(this.page));
+            return this.resultLength;
+            return this.displayResult;
         },
         resetList(){
             this.listShow = false;
@@ -329,7 +354,6 @@ export default {
             this.showProduction= '';
             this.showProcessing='';
         },
-        
         wordSearch(){
             this.result = [];
             this.listShow = true;
@@ -352,7 +376,16 @@ export default {
                 }
             }
             this.keyword = '';
-            return this.result;
+            this.resultLength = Math.ceil(this.result.length/this.pageSize);
+            this.displayResult = this.result.slice(this.pageSize*(this.page -1), this.pageSize*(this.page));
+            return this.resultLength;
+            return this.displayResult;
+        },
+        pageChange(pageNumber){
+            this.displayLists = this.articles.slice(this.pageSize*(pageNumber -1), this.pageSize*(pageNumber));
+        },
+        resultChange(pageNumber){
+            this.displayResults = this.result.slice(this.pageSize*(pageNumber -1), this.pageSize*(pageNumber));
         },
     },
     computed:{
