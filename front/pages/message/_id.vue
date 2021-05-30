@@ -9,9 +9,11 @@
                         v-for="(message, id) in messages" :key="id"
                         :class="message.send_id === user.id  ? 'send-item' : 'receive-item'"
                         >
-                            <v-avatar size="40" class="ml-2 mr-2">
-                                <img src="https://cdn.vuetifyjs.com/images/john.jpg">
-                            </v-avatar>
+                            <div>
+                                <v-avatar size="40" class="ml-2 mr-2">
+                                    <img :src="newIcon(message.send_id)">
+                                </v-avatar>
+                            </div>
                             <div>
                                 <span class="message-name">{{newMember(message.send_id)}}</span>
                                 <p class="message-sentence">{{message.message}}</p>
@@ -44,7 +46,7 @@
 <script>
 import Header from '~/components/Header.vue'
 
-import { mapActions, mapGetters, mapState } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
     components:{
@@ -63,7 +65,8 @@ export default {
         this.judgeType
         this.$store.dispatch('message/show',this.$route.params.id);
         this.$store.dispatch('users/loadMembers');
-        console.log(this.$route.params.id);
+        this.$store.dispatch('profile/loadProfiles');
+        this.$store.dispatch('profile/showProfile',this.user.id);
     },
     computed:{
         judgeType(){
@@ -76,6 +79,9 @@ export default {
         ]),
         ...mapState('users', [
             'members',
+        ]),
+        ...mapState('profile', [
+            'profiles',
         ]),
     },
     methods:{
@@ -90,6 +96,18 @@ export default {
                 return ''
             }
             return this.members[idx].name
+        },
+        newIcon(userId){
+            const idx = this.profiles.findIndex(p => p.user_id == userId)
+            if(idx < 0){
+                return ''
+            }
+            if(!this.profiles[idx].file_path){
+                return '/_nuxt/static/image.jpg'
+                
+            } else {
+                return this.profiles[idx].file_path
+            }
         },
     }
 }
@@ -113,34 +131,33 @@ export default {
             width:80%;
         };
         .message-item-wrapper{
-        .send-item,
-        .receive-item
-        {
-            display: flex;
-            align-items: flex-end;
-            width:100%;
-            .message-name{
-                color:$grey;
-                font-weight:bold;
+            .send-item,
+            .receive-item
+            {
+                display: flex;
+                align-items: flex-end;
+                width:100%;
+                .message-name{
+                    color:$grey;
+                    font-weight:bold;
+                }
+                .message-sentence{
+                    padding: 9px 12px;
+                    border-radius: 18px;
+                    max-width: 336px;
+                    font-size: 14px;
+                    line-height: 18px;
+                    color: #24282A;
+                    background-color: #f9f9f9;
+                    word-break: break-all;
+                }
+                .message-date{
+                    font-size:0.6rem;
+                }
             }
-            .message-sentence{
-                padding: 9px 12px;
-                border-radius: 18px;
-                max-width: 336px;
-                font-size: 14px;
-                line-height: 18px;
-                color: #24282A;
-                background-color: #f9f9f9;
-                word-break: break-all;
+            .send-item{
+                flex-direction: row-reverse;
             }
-            .message-date{
-                font-size:0.6rem;
-            }
-        }
-        .send-item{
-            flex-direction: row-reverse;
-        }
-        
         }
         
     }

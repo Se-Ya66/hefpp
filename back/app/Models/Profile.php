@@ -10,6 +10,7 @@ class Profile extends Model
     protected $fillable = [
         'prefecture',
         'type',
+        'file_path',
         'url',
         'introduction',
         'address',

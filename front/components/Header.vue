@@ -21,15 +21,29 @@
             >
                 <template #activator="{ on }">
                     <v-btn
+                    v-if="!profile.file_path"
                     v-on="on" 
                     :ripple="false"
                     large 
                     fab
                     plain
                     >
-                        <v-icon large>
-                            mdi-account
-                        </v-icon>
+                        <v-avatar size="50"
+                        >
+                            <img src="../static/image.jpg">
+                        </v-avatar>
+                    </v-btn>
+                    <v-btn
+                    v-else
+                    v-on="on" 
+                    icon
+                    large 
+                    fab
+                    >
+                        <v-avatar size="50"
+                        >
+                            <img :src="profile.file_path">
+                        </v-avatar>
                     </v-btn>
                 </template>
                 <v-card>
@@ -75,10 +89,14 @@ export default {
     },
     created () {
         this.$store.dispatch('users/show',this.$route.params.id);
+        this.$store.dispatch('profile/showProfile',this.user.id);
     },
     computed:{
         ...mapState('users', [
             'member',
+        ]),
+        ...mapState('profile', [
+            'profile',
         ]),
     },
 }

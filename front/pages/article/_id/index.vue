@@ -4,19 +4,19 @@
         <div class="article-detail-wrapper">
             <v-container>
                 <div v-show="show">{{article}}</div>
-                <span class="user-type-production">生産</span>
+                <span class="user-type-production">{{article.type}}</span>
+                <span>{{article.prefecture}}</span>
                 <h2 class="article-title">{{article.title}}</h2>
                 <div class="article-user mb-3">
                     <v-avatar size="40">
                         <img src="https://cdn.vuetifyjs.com/images/john.jpg">
                     </v-avatar>
                     <div class="article-userinfo">
-                        <span class="article-user-name">株式会社ケイアンドカンパニー</span>
-                        <div class="article-user-prefecture">愛知</div>
+                        <span class="article-user-name">{{newMember(article.user_id)}}</span>
                     </div>
                 </div>
                 <p>{{article.created_at}}</p>
-                <img src="../../../static/sample.jpg" class="article-img">
+                <img :src="article.file_path" class="article-img">
                 <v-container>
                     <div class="article-bottom-wrapper">
                         <v-row justify="space-between">
@@ -71,7 +71,19 @@ export default {
         ...mapState('article', [
             'article',
         ]),
+        ...mapState('users', [
+            'members',
+        ]),
     },
+    methods:{
+        newMember(userId){
+            const idx = this.members.findIndex(p => p.id == userId)
+            if(idx < 0){
+                return ''
+            }
+            return this.members[idx].name
+        },
+    }
 }
 </script>
 

@@ -60,15 +60,10 @@ export const actions = {
             console.log(error)
         })
     },
-    async update ({ commit }, article) {
-        const response = await this.$axios.put(`/articles/${article.id}`, 
-        {
-            title:article.title, 
-            body:article.body
-        })
+    async update ({ commit }, {articleId, article}) {
+        const response = await this.$axios.put(`/articles/${articleId}`, article)
         .catch(err => {
             console.log(err)
-            console.log(article.id)
         })
         commit('setArticles', response)
     },

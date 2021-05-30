@@ -39,12 +39,6 @@ class MessageController extends Controller
      */
     public function store(Request $request, $id)
     {
-        
-        // $message = new Message;
-        // $user = User::find($id);
-        // $request->user()->send()->attach($user);
-        // $message->fill($request->all());
-        // $message->save();
 
         $message = new Message;
         $user = User::find($id);
@@ -66,12 +60,13 @@ class MessageController extends Controller
         $send_id = $request->user()->id;
         $query =  Message::where(function($query) use ($send_id, $id) {
             $query->where('send_id',$send_id)
-                ->Where('recieve_id', $id); 
+                ->Where('receive_id', $id); 
         })->orwhere(function($query) use ($send_id, $id) {
-            $query->where('recieve_id',$send_id)
+            $query->where('receive_id',$send_id)
                 ->Where('send_id', $id);
         });
-        $messages = $query->get();
+        // $messages = $query->get();
+        $messages = $query->orderBy('created_at', 'asc')->get();
         return $messages;
     }
 
@@ -115,7 +110,7 @@ class MessageController extends Controller
         $user = User::find($id);
         $message->fill($request->all());
         $message->send_id = $request->user()->id;
-        $message->recieve_id = $user->id;
+        $message->receive_id = $user->id;
         $message->save();
 
     }
@@ -124,7 +119,9 @@ class MessageController extends Controller
     {
         $user = User::find($id);
         return [
-            'user' =>$user->sendings
+            'send_user' =>$user->sendings,
+            'receive_user' =>$user->receivings,
         ];
+
     }
 }

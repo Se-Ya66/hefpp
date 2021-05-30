@@ -13,12 +13,13 @@
                     >
                         <nuxt-link :to="`/message/${sending.id}`">
                             <v-avatar size="100">
-                                <img src="https://cdn.vuetifyjs.com/images/john.jpg">
+                                <img :src="newIcon(sending.id)">
                             </v-avatar>
                         </nuxt-link>
                         <p>{{sending.name}}</p>
                     </v-col>
                 </v-row>
+                
             </v-container>
             </div>
         </div>
@@ -27,6 +28,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex"
+
 import Header from '~/components/Header.vue'
 import Footer from '~/components/Footer.vue'
 export default {
@@ -37,30 +40,59 @@ export default {
     data(){
         return{
             sendings:[],
+            receivings:[],
+            list:[],
         }
     },
     created(){
         this.sendList(); 
+        this.$store.dispatch('profile/loadProfiles');
     },
     methods:{
         sendList() {
             this.$axios.get(`/${this.user.id}/sendings`)
             .then(res => {
-                this.sendings = res.data.user;
+                this.sendings = res.data.send_user;
+                this.receivings = res.data.receive_user;
             }).catch(function(error){
                 console.log(error);
             });
         },
+        newIcon(userId){
+            const idx = this.profiles.findIndex(p => p.user_id == userId)
+            if(idx < 0){
+                return ''
+            }
+            if(!this.profiles[idx].file_path){
+                return '/_nuxt/static/image.jpg'
+                
+            } else {
+                return this.profiles[idx].file_path
+            }
+        },
     },
     computed:{
+        // createList(){
+        //     const newList = this.sendings.filter(function (x, i, self) { 
+        //     return (self.findIndex(function (y) {
+        //         return (x.name === y.name)
+        //     }) === i);
+        //     });
+        //     return newList;
+        // },
         createList(){
-            const newList = this.sendings.filter(function (x, i, self) { 
+            this.list = this.sendings.concat(this.receivings);
+            const newList = this.list.filter(function (x, i, self) { 
             return (self.findIndex(function (y) {
                 return (x.name === y.name)
             }) === i);
             });
             return newList;
-        }
+        },
+        
+        ...mapState('profile', [
+            'profiles',
+        ]),
     }
 }
 </script>

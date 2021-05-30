@@ -39,26 +39,56 @@ export const actions = {
             console.log(error)
         })
     },
-    async create({ commit }, profileData){
-        const data = await this.$axios.$post('/profiles', profileData)
+    async create({ commit }, profile){
+        const data = await this.$axios.$post('/profiles', profile)
         .catch(err => {
             console.log(err)
         })
         commit('setProfile', data)
     },
-    async update ({ commit }, profile) {
-        const response = await this.$axios.put(`/profiles/${profile.id}`, 
+    async update ({ commit }, {userId, profile}) {
+        const response = await this.$axios.$put(`/profiles/${userId}`, profile)
+        .catch(err => {
+            console.log(err)
+        })
+        commit('setProfile', response)
+    },
+    // async update ({ commit }, profile) {
+    //     const response = await this.$axios.put(`/profiles/${profile.id}`, 
+    //     {
+    //         prefecture:profile.prefecture,
+    //         type:profile.type,
+    //         file:profile.image,
+    //         url:profile.url,
+    //         introduction:profile.introduction,
+    //         address:profile.address,
+    //         tel:profile.tel
+    //     })
+    //     .catch(err => {
+    //         console.log(err)
+    //     })
+    //     commit('setProfile', response)
+    // },
+    async updateImage ({ commit }, profile) {
+        const response = await this.$axios.put(`/${profile.id}/image`, 
         {
-            prefecture:profile.prefecture,
-            type:profile.type,
-            url:profile.url,
-            introduction:profile.introduction,
-            address:profile.address,
-            tel:profile.tel
+            image:profile.image,
         })
         .catch(err => {
             console.log(err)
         })
         commit('setProfile', response)
-    }
+        console.log(profile.image);
+    },
+
+    async updateImage ({ commit }, {userId, userImage}) {
+        const response = await this.$axios.post(`/${userId}/image`, 
+            {file:userImage}
+        )
+        .catch(err => {
+            console.log(err)
+        })
+        commit('setProfile', response)
+    },
+
 }

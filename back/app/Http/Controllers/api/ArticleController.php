@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ArticleRequest;
+use Storage;
+
 
 class ArticleController extends Controller
 {
@@ -38,11 +40,14 @@ class ArticleController extends Controller
      */
     public function store(ArticleRequest $request, Article $article)
     {
+        $article = $request->file('file');
+        $path = Storage::disk('s3')->put('article', $article, 'public');
         $article = new Article;
         $article->fill($request->all());
         $article->user_id = $request->user()->id;
+        $article->file_path = Storage::disk('s3')->url($path);
         $article->save();
-        return redirect('api/articles');
+        return $article;
 
     }
 
@@ -80,6 +85,16 @@ class ArticleController extends Controller
     {
         $article = Article::find($id);
         $article->fill($request->all())->save();
+        return $article;
+    }
+
+    public function updateimage(Request $request, $id)
+    {
+        $article = Article::find($id);
+        $image = $request->file('file');
+        $path = Storage::disk('s3')->put('article', $image, 'public');
+        $article->file_path = Storage::disk('s3')->url($path);
+        $article->save();
         return $article;
     }
 
@@ -139,4 +154,5 @@ class ArticleController extends Controller
 
     }
 
+    
 }

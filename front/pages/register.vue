@@ -70,6 +70,10 @@
           } catch(e) {
               return;
           }
+          this.$store.dispatch('flashMessage/showMessage',{
+            message: ' 登録しました',
+            status: true
+          })
           this.$auth.login({data: this.form});
           
           this.$router.push({name: 'main'});

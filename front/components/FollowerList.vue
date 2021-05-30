@@ -9,7 +9,7 @@
                 >
                     <nuxt-link :to="`/user/${follower.id}`">
                         <v-avatar size="100">
-                            <img src="https://cdn.vuetifyjs.com/images/john.jpg">
+                            <img :src="newIcon(follower.id)">
                         </v-avatar>
                     </nuxt-link>
                     <span>{{follower.name}}</span>
@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex"
+
 export default {
     data(){
         return{
@@ -28,6 +30,7 @@ export default {
     },
     created(){
         this.followerList(); 
+        this.$store.dispatch('profile/loadProfiles');
     },
     methods:{
         followerList() {
@@ -38,7 +41,24 @@ export default {
                 console.log(error);
             });
         },
-    }
+        newIcon(userId){
+            const idx = this.profiles.findIndex(p => p.user_id == userId)
+            if(idx < 0){
+                return ''
+            }
+            if(!this.profiles[idx].file_path){
+                return '/_nuxt/static/image.jpg'
+                
+            } else {
+                return this.profiles[idx].file_path
+            }
+        },
+    },
+    computed:{
+        ...mapState('profile', [
+            'profiles',
+        ]),
+    },
 }
 </script>
 

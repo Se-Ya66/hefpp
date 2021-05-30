@@ -5,9 +5,16 @@
                 <v-container>
                     <div class="uer-top-inner">
                         <div class="mr-6">
-                            <v-avatar size="70">
-                                <img src="https://cdn.vuetifyjs.com/images/john.jpg">
-                            </v-avatar>
+                            <div v-if="!profile.file_path">
+                                <v-icon large>
+                                    mdi-account
+                                </v-icon>
+                            </div>
+                            <div v-else>
+                                <v-avatar size="70">
+                                    <img :src="profile.file_path">
+                                </v-avatar>
+                            </div>
                         </div>
                         <div>
                             <h1>{{member.name}}</h1>

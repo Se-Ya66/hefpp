@@ -13,7 +13,13 @@
                         counter
                         />
                     </v-container>
-                    <img src="../static/sample.jpg" class="article-img">
+                    <img :src="article.file_path" class="article-img">
+                    <input class="mb-3" type="file" @change="confirmImage" />
+                    <div class="edit-btn confirm-btn"
+                    @click="updateImage"
+                    >
+                        変更
+                    </div>
                     <h2>種別</h2>
                     <v-container>
                         <v-radio-group
@@ -131,8 +137,10 @@ export default {
                 body:'',
                 conditions:'',
                 type:'',
-                prefecture:''
+                prefecture:'',
             },
+            confirmedImage: "",
+            file:'',
             dialog:false,
             items:[
                 '北海道',
@@ -197,14 +205,43 @@ export default {
     methods: {
         ...mapActions('article', ['update']),
             async updateArticle () {
-                await this.$store.dispatch('article/update', this.myarticle)
+                await this.$store.dispatch('article/update', {articleId:this.$route.params.id, article:this.myarticle})
                 this.$router.push({ path: `/article/${this.$route.params.id}` })
         },
         confirmArticle(){
             if(this.$refs.article_form.validate()){
                 this.dialog = true;
             }
-        }
+        },
+        updateImage(){
+                let data = new FormData();
+                    data.append("file", this.file);
+            this.$axios
+                .post(`/${this.$route.params.id}/article/image`, data)
+                .then(response => {
+                    this.file = "";
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+                this.$router.push({ path: `/article/${this.$route.params.id}` })
+            
+        },
+        confirmImage(e) {
+            this.file = e.target.files[0];
+            if (!this.file.type.match("image.*")) {
+                this.confirmedImage = "";
+                return;
+            }
+            this.createImage(this.file);
+        },
+        createImage(file) {
+            let reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = e => {
+                this.confirmedImage = e.target.result;
+            };
+        },
     },
     computed:{
         ...mapState('article', [

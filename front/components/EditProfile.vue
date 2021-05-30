@@ -12,103 +12,128 @@
                     プロフィール 
                 </v-tab>
                 <v-tab-item>
-                    <!-- <v-card flat>
-                    </v-card> -->
-                        <v-form ref="info_form">
-                            <div class="edit-profile-form">
-                                <h1>名前</h1>
-                                <v-container>
-                                    <v-text-field 
-                                    outlined
-                                    v-model="myinfo.name"
-                                    :rules="[rules.counter]"
-                                    />
-                                </v-container>
-                            </div>
-                            <div class="edit-profile-form">
-                                <h1>メールアドレス</h1>
-                                <v-container>
-                                    <v-text-field 
-                                    outlined
-                                    v-model="myinfo.email"
-                                    :rules="[rules.email]"
-                                    />
-                                </v-container>
-                            </div>
-                        </v-form>
-                        <div class="edit-btn confirm-btn"
-                        @click="confirmDialog2"
-                        >
-                            確認する
+                    <v-form ref="info_form">
+                        <div class="edit-profile-form">
+                            <h1>名前</h1>
+                            <v-container>
+                                <v-text-field 
+                                outlined
+                                v-model="myinfo.name"
+                                :rules="[rules.counter]"
+                                />
+                            </v-container>
                         </div>
-                        <transition name="confirm">
-                            <div class="bg" v-show="dialog2">
-                                <div class="bg-inner">
-                                    <h1 class="mb-4">基本情報</h1>
-                                    <span>名前</span>
-                                    <v-container>
-                                        <p>{{myinfo.name}}</p>
-                                    </v-container>
-                                    <span>メールアドレス</span>
-                                    <v-container>
-                                        <p>{{myinfo.email}}</p>
-                                    </v-container>
-                                    <div class="btn-wrapper">
-                                        <div
-                                        class="edit-btn"
-                                        @click="updateInfo"
-                                        >
-                                            変更
-                                        </div>
-                                        <div
-                                        class="edit-btn ml-2"
-                                        @click="dialog2=false"
-                                        >
-                                            キャンセル
-                                        </div>
+                        <div class="edit-profile-form">
+                            <h1>メールアドレス</h1>
+                            <v-container>
+                                <v-text-field 
+                                outlined
+                                v-model="myinfo.email"
+                                :rules="[rules.email]"
+                                />
+                            </v-container>
+                        </div>
+                    </v-form>
+                    <div class="edit-btn confirm-btn"
+                    @click="confirmDialog2"
+                    >
+                        確認する
+                    </div>
+                    <transition name="confirm">
+                        <div class="bg" v-show="dialog2">
+                            <div class="bg-inner">
+                                <h1 class="mb-4">基本情報</h1>
+                                <span>名前</span>
+                                <v-container>
+                                    <p>{{myinfo.name}}</p>
+                                </v-container>
+                                <span>メールアドレス</span>
+                                <v-container>
+                                    <p>{{myinfo.email}}</p>
+                                </v-container>
+                                <div class="btn-wrapper">
+                                    <div
+                                    class="edit-btn"
+                                    @click="updateInfo"
+                                    >
+                                        変更
+                                    </div>
+                                    <div
+                                    class="edit-btn ml-2"
+                                    @click="dialog2=false"
+                                    >
+                                        キャンセル
                                     </div>
                                 </div>
                             </div>
-                        </transition>
-                        <v-form ref="password_form">
-                            <div class="edit-profile-form">
-                                <h1>現在のパスワード</h1>
-                                <v-container>
-                                <v-text-field 
-                                outlined
-                                v-model="mypassword.current_password"
-                                />
-                                </v-container>
-                            </div>
-                            <div class="edit-profile-form">
-                                <h1>新しいパスワード</h1>
-                                <v-container>
-                                <v-text-field 
-                                outlined
-                                v-model="mypassword.new_password"
-                                :rules="[rules.required, rules.counter2]"
-                                />
-                                </v-container>
-                            </div>
-                        </v-form>
-                        <div class="error-message" v-if="errors.password">
-                            {{ errors.password[0] }}
                         </div>
-                        <div class="edit-btn confirm-btn"
-                        @click="updatePassword"
-                        >
-                            変更
+                    </transition>
+                    <v-form ref="password_form">
+                        <div class="edit-profile-form">
+                            <h1>現在のパスワード</h1>
+                            <v-container>
+                            <v-text-field 
+                            outlined
+                            v-model="mypassword.current_password"
+                            />
+                            </v-container>
                         </div>
+                        <div class="edit-profile-form">
+                            <h1>新しいパスワード</h1>
+                            <v-container>
+                            <v-text-field 
+                            outlined
+                            v-model="mypassword.new_password"
+                            :rules="[rules.required, rules.counter2]"
+                            />
+                            </v-container>
+                        </div>
+                    </v-form>
+                    <div class="error-message" v-if="errors.password">
+                        {{ errors.password[0] }}
+                    </div>
+                    <div class="edit-btn confirm-btn"
+                    @click="updatePassword"
+                    >
+                        変更
+                    </div>
                 </v-tab-item>
                 <v-tab-item>
                     <v-card flat>
                         <v-container >
                             <v-form ref="profile_form">
                                 <div class="edit-profile-form">
-                                    <h1>プロフィール写真</h1>
+                                    <h1>イメージ</h1>
                                     <v-container>
-                                        <v-text-field 
-                                        outlined/>
+                                        <div 
+                                        class="mb-3"
+                                        v-if="confirmedImage"
+                                        >   
+                                            <v-avatar size="100">
+                                                <img :src="confirmedImage" />
+                                            </v-avatar>
+                                        </div>
+                                        <div 
+                                        class="mb-3"
+                                        v-else
+                                        >   
+                                            <div v-if="profile.file_path">
+                                                <v-avatar size="100">
+                                                    <img :src="profile.file_path">
+                                                </v-avatar>
+                                            </div>
+                                            <div v-else>
+                                                <v-icon large>
+                                                    mdi-account
+                                                </v-icon>
+                                            </div>
+                                        </div>
+                                        <input class="mb-3" type="file" @change="confirmImage" />
+                                        <div class="edit-btn confirm-btn"
+                                        @click="updateImage"
+                                        >
+                                            変更
+                                        </div>
                                     </v-container>
                                 </div>
                                 <div class="edit-profile-form">
@@ -258,6 +283,7 @@ export default {
             },
             myprofile:{
                 type: '',
+                // image: '',
                 prefecture: '',
                 url: '',
                 tel: '',
@@ -325,6 +351,8 @@ export default {
                     return pattern.test(value) || '有効なメールアドレスを指定してください'
                 },
             },
+            file:"",
+            confirmedImage: ""
         }
     },
     created(){
@@ -333,7 +361,6 @@ export default {
         Object.assign(this.myprofile,this.profile);
         Object.assign(this.myinfo,this.member);
         Object.assign(this.mypassword,this.member);
-        
     },
     computed:{
         ...mapState('profile', [
@@ -350,11 +377,9 @@ export default {
         async updateProfile () {
             if(!this.profile){
                 await this.$store.dispatch('profile/create', this.myprofile)
-                console.log(this.myprofile);
                 this.$router.push({ path: `/user/${this.$route.params.id}` })
             }else{
-                await this.$store.dispatch('profile/update', this.myprofile)
-                console.log(this.myprofile);
+                await this.$store.dispatch('profile/update', {userId:this.user.id, profile:this.myprofile})
                 this.$router.push({ path: `/user/${this.$route.params.id}` })
             }
         },
@@ -365,11 +390,11 @@ export default {
                 this.dialog2 = false;
         },
         ...mapActions('users', ['updatePassword']),
-            async updatePassword () {
-                if(this.$refs.password_form.validate()){
-                    await this.$store.dispatch('users/updatePassword', this.mypassword)
-                    console.log(this.mypassword);
-                }
+        async updatePassword () {
+            if(this.$refs.password_form.validate()){
+                await this.$store.dispatch('users/updatePassword', this.mypassword)
+                console.log(this.mypassword);
+            }
         },
         confirmDialog(){
             if(this.$refs.profile_form.validate()){
@@ -381,6 +406,58 @@ export default {
                 this.dialog2 = true;
             }
         },
+        ...mapActions('profile', ['updateImage']),
+        // async updateImage(){
+        //     if(!this.profile){
+        //         this.$store.dispatch('flashMessage/showMessage',{
+        //             message: '先にプロフィールを作成してください',
+        //             status: true
+        //         })
+        //     }else{
+        //         let data = new FormData();
+        //             data.append("userId", this.user.id);
+        //             data.append("userImage", this.file);
+        //         await this.$store.dispatch('profile/updateImage', data)
+        //         this.$router.push({ path: `/user/${this.$route.params.id}` })
+
+        //     }
+        // },
+        updateImage(){
+            if(!this.profile){
+                this.$store.dispatch('flashMessage/showMessage',{
+                    message: '先にプロフィールを作成してください',
+                    status: true
+                })
+            }else{
+                let data = new FormData();
+                    data.append("file", this.file);
+            this.$axios
+                .post(`/${this.user.id}/image`, data)
+                .then(response => {
+                    this.file = "";
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+                this.$router.push({ path: `/user/${this.$route.params.id}` })
+            }
+        },
+        confirmImage(e) {
+            this.file = e.target.files[0];
+            if (!this.file.type.match("image.*")) {
+                this.confirmedImage = "";
+                return;
+            }
+            this.createImage(this.file);
+        },
+        createImage(file) {
+            let reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = e => {
+                this.confirmedImage = e.target.result;
+            };
+        },
+        
     }
     
 }

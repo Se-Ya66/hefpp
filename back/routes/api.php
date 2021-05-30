@@ -31,8 +31,13 @@ Route::get('articles/{article}/like', 'ArticleController@like');
 Route::get('articles/{article}/unlike', 'ArticleController@unlike');
 Route::get('articles/{article}/count', 'ArticleController@count');
 Route::get('articles/{article}/hasfavorites', 'ArticleController@hasfavorite');
+Route::get('/{article}/article/image', 'ArticleController@updateimage');
+Route::post('/{article}/article/image', 'ArticleController@updateimage');
+
 
 Route::resource('/profiles', 'ProfileController', ['except' => ['create', 'edit', 'destroy']]);
+Route::get('/{profile}/image', 'ProfileController@updateimage');
+Route::post('/{profile}/image', 'ProfileController@updateimage');
 
 Route::put('/{name}/follow', 'UsersController@follow')->name('follow');
 Route::delete('/{name}/follow', 'UsersController@unfollow')->name('unfollow');
@@ -51,3 +56,4 @@ Route::resource('/messages', 'MessageController', ['except' => ['create', 'edit'
 
 Route::post('/{message}/messages', 'MessageController@send');
 Route::get('/{message}/sendings', 'MessageController@sendings');
+

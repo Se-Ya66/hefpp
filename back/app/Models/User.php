@@ -71,6 +71,12 @@ class User extends Authenticatable implements JWTSubject
 
     public function sendings(): BelongsToMany
     {
-        return $this->belongsToMany('App\Models\User', 'messages', 'recieve_id', 'send_id')->withTimestamps();
+        return $this->belongsToMany('App\Models\User', 'messages', 'receive_id', 'send_id')->withTimestamps();
+        
+    }
+    public function receivings(): BelongsToMany
+    {
+        return $this->belongsToMany('App\Models\User', 'messages', 'send_id', 'receive_id')->withTimestamps();
+        
     }
 }

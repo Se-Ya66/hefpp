@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Profile;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProfileRequest;
+use Storage;
 
 
 class ProfileController extends Controller
@@ -39,6 +40,8 @@ class ProfileController extends Controller
      */
     public function store(ProfileRequest $request, Profile $profile)
     {
+        // $profile = $request->file('file');
+        // $path = Storage::disk('s3')->put('profile', $profile, 'public');
         $profile = new Profile;
         $profile->fill($request->all());
         $profile->user_id = $request->user()->id;
@@ -55,7 +58,7 @@ class ProfileController extends Controller
      */
     public function show($id)
     {
-        $profile = Profile::find($id);
+        $profile = Profile::Where('user_id', $id)->first();
         return $profile;
     }
 
@@ -81,7 +84,19 @@ class ProfileController extends Controller
     {
         $profile = Profile::find($id);
         $profile->fill($request->all())->save();
-        // return redirect("api/profiles/".$id);
+        return $profile;
+
+        
+    }
+
+    public function updateimage(Request $request, $id)
+    {
+        $id = $request->user()->id;
+        $profile = Profile::Where('user_id', $id)->first(); 
+        $image = $request->file('file');
+        $path = Storage::disk('s3')->put('profile', $image, 'public');
+        $profile->file_path = Storage::disk('s3')->url($path);
+        $profile->save();
         return $profile;
     }
 
@@ -95,4 +110,6 @@ class ProfileController extends Controller
     {
         //
     }
+
+
 }

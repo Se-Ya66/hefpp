@@ -76,20 +76,23 @@
                             <span>{{result.length}}/{{articles.length}}件</span>
                         </div>
                         <div class="article-item" v-for="(article, id) in displayResult" :key="id">
-                            <img src="../static/sample.jpg" class="article-img">
+                            <nuxt-link :to="`/article/${article.id}`">
+                                <img :src="article.file_path" class="article-img">
+                            </nuxt-link>
                             <span class="user-type-production">{{article.type}}</span>
                             <h2 class="mt-2 mb-2">{{article.title}}</h2>
                             <p>{{article.body}}</p>
                             <div class="article-user ">
-                                <v-avatar size="40">
-                                    <img src="https://cdn.vuetifyjs.com/images/john.jpg">
-                                </v-avatar>
+                                <nuxt-link :to="`/user/${article.user_id}`">
+                                    <v-avatar size="40">
+                                        <img :src="newIcon(article.user_id)">
+                                    </v-avatar>
+                                </nuxt-link>
                                 <div class="article-userinfo">
                                     <span class="article-user-name">{{newMember(article.user_id)}}</span>
                                     <span>{{article.prefecture}}</span>
                                 </div>
                             </div>
-                            <nuxt-link :to="`/article/${article.id}`">詳細</nuxt-link>
                         </div>
                         <v-container class="max-width">
                             <v-pagination
@@ -105,16 +108,18 @@
                         </div>
                         <div class="article-item" v-for="(article, id) in displayLists" :key="id">
                             <nuxt-link :to="`/article/${article.id}`">
-                                <img src="../static/sample.jpg" class="article-img">
+                                <img :src="article.file_path" class="article-img">
                             </nuxt-link>
                             <span class="user-type-production">{{article.type}}</span>
                             <span class="ml-3">{{article.prefecture}}</span>
                             <h2 class="mt-2 mb-2">{{article.title}}</h2>
                             <p>{{article.body}}</p>
                             <div class="article-user ">
-                                <v-avatar size="40">
-                                    <img src="https://cdn.vuetifyjs.com/images/john.jpg">
-                                </v-avatar>
+                                <nuxt-link :to="`/user/${article.user_id}`">
+                                    <v-avatar size="40">
+                                        <img :src="newIcon(article.user_id)">
+                                    </v-avatar>
+                                </nuxt-link>
                                 <div class="article-userinfo">
                                     <span class="article-user-name">{{newMember(article.user_id)}}</span>
                                 </div>
@@ -314,6 +319,17 @@ export default {
                 return ''
             }
             return this.members[idx].name
+        },
+        newIcon(userId){
+            const idx = this.profiles.findIndex(p => p.user_id == userId)
+            if(idx < 0){
+                return ''
+            }
+            if(!this.profiles[idx].file_path){
+                return '/_nuxt/static/image.jpg'
+            } else {
+                return this.profiles[idx].file_path
+            }
         },
         searchType(){
             this.result = [];
