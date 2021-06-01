@@ -3,6 +3,16 @@
         <v-container>
             <div class="article-edit-inner">
                 <v-form ref="article_form">
+                    <img :src="article.file_path" class="article-img" v-if="article.file_path">
+                    <p v-if="confirmedImage">
+                        <img class="article-img" :src="confirmedImage" />
+                    </p>
+                    <input class="mb-3" type="file" @change="confirmImage" />
+                    <div class="edit-btn confirm-btn"
+                    @click="updateImage"
+                    >
+                        写真を変更
+                    </div>
                     <h2>タイトル</h2>
                     <v-container>
                         <v-text-field
@@ -13,13 +23,6 @@
                         counter
                         />
                     </v-container>
-                    <img :src="article.file_path" class="article-img">
-                    <input class="mb-3" type="file" @change="confirmImage" />
-                    <div class="edit-btn confirm-btn"
-                    @click="updateImage"
-                    >
-                        変更
-                    </div>
                     <h2>種別</h2>
                     <v-container>
                         <v-radio-group
@@ -204,9 +207,9 @@ export default {
     },
     methods: {
         ...mapActions('article', ['update']),
-            async updateArticle () {
-                await this.$store.dispatch('article/update', {articleId:this.$route.params.id, article:this.myarticle})
-                this.$router.push({ path: `/article/${this.$route.params.id}` })
+        async updateArticle () {
+            await this.$store.dispatch('article/update', {articleId:this.$route.params.id, article:this.myarticle})
+            this.$router.push({ path: `/article/${this.$route.params.id}` })
         },
         confirmArticle(){
             if(this.$refs.article_form.validate()){
@@ -225,6 +228,8 @@ export default {
                     console.log(err);
                 });
                 this.$router.push({ path: `/article/${this.$route.params.id}` })
+                this.$router.go({path: this.$router.currentRoute.path, force: true})
+
             
         },
         confirmImage(e) {

@@ -82,7 +82,7 @@
                                             <v-icon>
                                                 mdi-link-variant
                                             </v-icon>
-                                            <a href="https://www.yahoo.co.jp/">{{profile.url}}</a>
+                                            <a :href="profile.url">{{profile.url}}</a>
                                         </li>
                                         <li>
                                             <v-icon>
@@ -117,13 +117,14 @@
                                             tile
                                             :to="`/article/${article.id}`"
                                             >
-                                                <img src="../static/sample.jpg" class="article-img">
-                                                    <h2 class="card-title">
-                                                        {{article.title}}
-                                                    </h2>
-                                                    <p class="card-body">
-                                                        {{article.body}}
-                                                    </p>
+                                                <img :src="article.file_path" class="article-img" v-if="article.file_path">
+                                                <img src="../static/noimage.jpg" class="article-img" v-else>
+                                                <h2 class="card-title">
+                                                    {{article.title}}
+                                                </h2>
+                                                <p class="card-body">
+                                                    {{article.body}}
+                                                </p>
                                             </v-card>
                                         </v-col>
                                     </v-row>
@@ -148,7 +149,7 @@ import followbutton from '~/components/FollowButton.vue'
 import followlist from '~/components/FollowList.vue'
 import followerlist from '~/components/FollowerList.vue'
 
-import { mapActions, mapGetters, mapState } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
     components:{

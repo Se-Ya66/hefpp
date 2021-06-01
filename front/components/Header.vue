@@ -20,7 +20,7 @@
             open-on-click
             >
                 <template #activator="{ on }">
-                    <v-btn
+                    <!-- <v-btn
                     v-if="!profile.file_path"
                     v-on="on" 
                     :ripple="false"
@@ -43,6 +43,17 @@
                         <v-avatar size="50"
                         >
                             <img :src="profile.file_path">
+                        </v-avatar>
+                    </v-btn> -->
+                    <v-btn
+                    v-on="on" 
+                    icon
+                    large 
+                    fab
+                    >
+                        <v-avatar size="50"
+                        >
+                            <img :src="newIcon(user.id)">
                         </v-avatar>
                     </v-btn>
                 </template>
@@ -85,18 +96,35 @@ export default {
                 message: 'ログアウトしました',
                 status: true
             })
-        }
+        },
+        newIcon(userId){
+            const idx = this.profiles.findIndex(p => p.user_id == userId)
+            if(idx < 0){
+                return '/_nuxt/static/image.jpg'
+            }else{
+                if(!this.profiles[idx].file_path){
+                    return '/_nuxt/static/image.jpg'
+                }else{
+                    return this.profiles[idx].file_path
+
+                }
+            }
+        },
     },
     created () {
         this.$store.dispatch('users/show',this.$route.params.id);
-        this.$store.dispatch('profile/showProfile',this.user.id);
+        // this.$store.dispatch('profile/showProfile',this.user.id);
+        this.$store.dispatch('profile/loadProfiles');
     },
     computed:{
         ...mapState('users', [
             'member',
         ]),
+        // ...mapState('profile', [
+        //     'profile',
+        // ]),
         ...mapState('profile', [
-            'profile',
+            'profiles',
         ]),
     },
 }

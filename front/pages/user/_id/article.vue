@@ -13,7 +13,8 @@
                         tile
                         >
                             <nuxt-link :to="`/article/${article.id}`">
-                                <img :src="article.file_path" class="user-article-img">
+                                <img :src="article.file_path" class="user-article-img" v-if="article.file_path">
+                                <img src="../../../static/image.jpg" class="user-article-img" v-else>
                             </nuxt-link>
                             <h2 class="card-title">
                                 {{article.title}}

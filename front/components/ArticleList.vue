@@ -62,10 +62,8 @@
                             </v-btn>
                         </div>
                         <div class="post-btn-wrapper">
-                            <div class="post-btn">
-                                <nuxt-link to="/article/post" class="post-txt">
-                                    投稿する
-                                </nuxt-link>
+                            <div class="post-btn" @click="goPostPage">
+                                投稿する
                             </div>
                         </div>
                     </div>
@@ -77,7 +75,8 @@
                         </div>
                         <div class="article-item" v-for="(article, id) in displayResult" :key="id">
                             <nuxt-link :to="`/article/${article.id}`">
-                                <img :src="article.file_path" class="article-img">
+                                <img :src="article.file_path" class="article-img" v-if="article.file_path">
+                                <img src="../static/noimage.jpg" class="article-img" v-else>
                             </nuxt-link>
                             <span class="user-type-production">{{article.type}}</span>
                             <h2 class="mt-2 mb-2">{{article.title}}</h2>
@@ -108,7 +107,8 @@
                         </div>
                         <div class="article-item" v-for="(article, id) in displayLists" :key="id">
                             <nuxt-link :to="`/article/${article.id}`">
-                                <img :src="article.file_path" class="article-img">
+                                <img :src="article.file_path" class="article-img" v-if="article.file_path">
+                                <img src="../static/noimage.jpg" class="article-img" v-else>
                             </nuxt-link>
                             <span class="user-type-production">{{article.type}}</span>
                             <span class="ml-3">{{article.prefecture}}</span>
@@ -403,6 +403,17 @@ export default {
         resultChange(pageNumber){
             this.displayResults = this.result.slice(this.pageSize*(pageNumber -1), this.pageSize*(pageNumber));
         },
+        goPostPage(){
+            const idx = this.profiles.findIndex(p => p.user_id == this.user.id)
+            if(idx < 0){
+                this.$store.dispatch('flashMessage/showMessage',{
+                    message: '先にプロフィールを作成してください',
+                    status: true
+                })
+            }else{
+                this.$router.push({ path: '/article/post' })
+            }
+        },
     },
     computed:{
         ...mapState('article', [
@@ -414,7 +425,6 @@ export default {
         ...mapState('profile', [
             'profiles',
         ]),
-        
     },
     
 }

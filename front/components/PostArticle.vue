@@ -26,19 +26,17 @@
                         value="加工"
                         ></v-radio>
                     </v-radio-group>
-                    <div 
+                    <!-- <div 
                     class="mb-3"
                     v-if="confirmedImage"
                     >   
                         <img :src="confirmedImage" />
                     </div>
-                    <div 
-                    class="mb-3"
-                    v-else
-                    >   
-                        <p>無し</p>
-                    </div>
-                    <input class="mb-3" type="file" @change="confirmImage" />
+                    <input class="mb-3" type="file" @change="confirmImage" /> -->
+                    <p v-if="confirmedImage">
+                        <img class="article-img" :src="confirmedImage" />
+                    </p>
+                    <input type="file" @change="confirmImage"  class="mb-3"/>
                     <v-select
                     :items="items"
                     outlined
@@ -130,7 +128,7 @@ export default {
                 prefecture: '',
                 body: '',
                 conditions:'',
-                file:'',
+                file:[],
             },
             dialog:false,
             items:[
@@ -193,7 +191,6 @@ export default {
     },
     methods:{
         async postArticles(){
-            // this.dialog = false
             let data = new FormData();
             data.append("title", this.article.title);
             data.append("body", this.article.body);
@@ -206,7 +203,7 @@ export default {
                 message: '投稿しました',
                 status: true
             })
-            // this.$router.push({name: 'main'});
+            this.$router.push({name: 'main'});
             // this.$router.go({path: this.$router.currentRoute.path, force: true})
         },
         confirmDialog(){
@@ -242,6 +239,11 @@ export default {
     .form-wrapper{
         width:80%;
         margin: 0 auto;
+        .article-img{
+            width:100%;
+            height:400px;
+            object-fit: cover;
+        }
     }
 }
 </style>

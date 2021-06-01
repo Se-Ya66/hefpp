@@ -9,14 +9,15 @@
                 <h2 class="article-title">{{article.title}}</h2>
                 <div class="article-user mb-3">
                     <v-avatar size="40">
-                        <img src="https://cdn.vuetifyjs.com/images/john.jpg">
+                        <img :src="newIcon(article.user_id)">
                     </v-avatar>
                     <div class="article-userinfo">
                         <span class="article-user-name">{{newMember(article.user_id)}}</span>
                     </div>
                 </div>
                 <p>{{article.created_at}}</p>
-                <img :src="article.file_path" class="article-img">
+                <img :src="article.file_path" class="article-img" v-if="article.file_path">
+                <img src="../../../static/noimage.jpg" class="article-img" v-else>
                 <v-container>
                     <div class="article-bottom-wrapper">
                         <v-row justify="space-between">
@@ -66,6 +67,7 @@ export default {
     },
     created () {
         this.$store.dispatch('article/show',this.$route.params.id);
+        this.$store.dispatch('profile/loadProfiles');
     },
     computed:{
         ...mapState('article', [
@@ -73,6 +75,9 @@ export default {
         ]),
         ...mapState('users', [
             'members',
+        ]),
+        ...mapState('profile', [
+            'profiles',
         ]),
     },
     methods:{
@@ -82,6 +87,17 @@ export default {
                 return ''
             }
             return this.members[idx].name
+        },
+        newIcon(userId){
+            const idx = this.profiles.findIndex(p => p.user_id == userId)
+            if(idx < 0){
+                return ''
+            }
+            if(!this.profiles[idx].file_path){
+                return '/_nuxt/static/image.jpg'
+            } else {
+                return this.profiles[idx].file_path
+            }
         },
     }
 }

@@ -18,7 +18,8 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Article::all();
+        // $articles = Article::all();
+        $articles = Article::orderBy('created_at', 'desc')->get();
         return $articles;
     }
 
@@ -38,16 +39,26 @@ class ArticleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ArticleRequest $request, Article $article)
+    // public function store(ArticleRequest $request, Article $article)
+    public function store(Request $request)
     {
-        $article = $request->file('file');
-        $path = Storage::disk('s3')->put('article', $article, 'public');
-        $article = new Article;
-        $article->fill($request->all());
-        $article->user_id = $request->user()->id;
-        $article->file_path = Storage::disk('s3')->url($path);
-        $article->save();
-        return $article;
+
+        if (request()->file){
+            $article = $request->file('file');
+            $path = Storage::disk('s3')->put('article', $article, 'public');
+
+            $article = new Article;
+            $article->file_path = Storage::disk('s3')->url($path);
+            $article->fill($request->all());
+            $article->user_id = $request->user()->id;
+            $article->save();
+        } else {
+            $article = new Article;
+            $article->fill($request->all());
+            $article->user_id = $request->user()->id;
+            $article->file_path = '';
+            $article->save();
+        }
 
     }
 

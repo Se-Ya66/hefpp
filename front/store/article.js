@@ -35,8 +35,8 @@ export const actions = {
         console.log(error)
         })
     },
-    async postArticles({ commit }, postData){
-        const data = await this.$axios.$post('/articles', postData)
+    async postArticles({ commit }, article){
+        const data = await this.$axios.post('/articles', article)
         .catch(err => {
             console.log(err)
         })

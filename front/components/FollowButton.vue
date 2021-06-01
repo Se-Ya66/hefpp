@@ -27,7 +27,7 @@
         </v-btn>
       </div>
       <v-btn 
-      :to="`/message/${$route.params.id}`"
+      @click="goSendPage"
       v-show="show"
       class="ml-3"
       icon
@@ -41,6 +41,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
   export default {
     props: ['userId'],
     data() {
@@ -65,6 +67,9 @@
       this.followerList(); 
     },
     computed: {
+      ...mapState('profile', [
+          'profiles',
+      ]),
       canFollow(){
         const num = Number(this.$route.params.id);
         if(this.user.id === num){
@@ -131,7 +136,17 @@
             console.log(error);
           });
       },
-      
+      goSendPage(){
+        const idx = this.profiles.findIndex(p => p.user_id == this.user.id)
+        if(idx < 0){
+            this.$store.dispatch('flashMessage/showMessage',{
+                message: '先にプロフィールを作成してください',
+                status: true
+            })
+        }else{
+            this.$router.push({ path: `/message/${this.$route.params.id}` })
+        }
+      },
     }
   }
 </script>
