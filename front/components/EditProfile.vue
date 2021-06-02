@@ -134,6 +134,7 @@
                                         >
                                             変更
                                         </div>
+                                        <p>{{message}}</p>
                                     </v-container>
                                 </div>
                                 <div class="edit-profile-form">
@@ -352,7 +353,8 @@ export default {
                 },
             },
             file:"",
-            confirmedImage: ""
+            confirmedImage: "",
+            message:''
         }
     },
     created(){
@@ -407,21 +409,6 @@ export default {
             }
         },
         ...mapActions('profile', ['updateImage']),
-        // async updateImage(){
-        //     if(!this.profile){
-        //         this.$store.dispatch('flashMessage/showMessage',{
-        //             message: '先にプロフィールを作成してください',
-        //             status: true
-        //         })
-        //     }else{
-        //         let data = new FormData();
-        //             data.append("userId", this.user.id);
-        //             data.append("userImage", this.file);
-        //         await this.$store.dispatch('profile/updateImage', data)
-        //         this.$router.push({ path: `/user/${this.$route.params.id}` })
-
-        //     }
-        // },
         updateImage(){
             if(!this.profile){
                 this.$store.dispatch('flashMessage/showMessage',{
@@ -431,15 +418,17 @@ export default {
             }else{
                 let data = new FormData();
                     data.append("file", this.file);
-            this.$axios
+                this.$axios
                 .post(`/${this.user.id}/image`, data)
                 .then(response => {
                     this.file = "";
+                    this.$router.push({ path: `/user/${this.$route.params.id}` })
                 })
                 .catch(err => {
                     console.log(err);
+                    console.log(err.response.data.errors);
+                    this.message = err.response.data.errors.file[0];
                 });
-                this.$router.push({ path: `/user/${this.$route.params.id}` })
             }
         },
         confirmImage(e) {

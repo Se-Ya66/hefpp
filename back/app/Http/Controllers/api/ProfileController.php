@@ -91,6 +91,13 @@ class ProfileController extends Controller
 
     public function updateimage(Request $request, $id)
     {
+        $this->validate($request, [
+            'file' => 'required|image'
+        ], [
+            'file.image' => '画像ファイルではありません',
+            'file.required' => '画像を選択してください',
+        ]);
+
         $id = $request->user()->id;
         $profile = Profile::Where('user_id', $id)->first(); 
         $image = $request->file('file');

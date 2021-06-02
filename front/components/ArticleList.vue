@@ -105,7 +105,7 @@
                         <div class="article-count">
                             <span>{{articles.length}}/{{articles.length}}件</span>
                         </div>
-                        <div class="article-item" v-for="(article, id) in displayLists" :key="id">
+                        <div class="article-item" v-for="(article, id) in displayList" :key="id">
                             <nuxt-link :to="`/article/${article.id}`">
                                 <img :src="article.file_path" class="article-img" v-if="article.file_path">
                                 <img src="../static/noimage.jpg" class="article-img" v-else>
@@ -297,7 +297,7 @@ export default {
                 "沖縄"
             ],
             result:[],
-            displayLists:[],
+            displayList:[],
             pageSize: 5,
             page:1,
             length:'',
@@ -310,7 +310,7 @@ export default {
         this.$store.dispatch('users/loadMembers');
         this.$store.dispatch('profile/loadProfiles');
         this.length = Math.ceil(this.articles.length/this.pageSize);
-        this.displayLists = this.articles.slice(this.pageSize*(this.page -1), this.pageSize*(this.page));
+        this.displayList = this.articles.slice(this.pageSize*(this.page -1), this.pageSize*(this.page));
     },
     methods: {
         newMember(userId){
@@ -398,7 +398,7 @@ export default {
             return this.displayResult;
         },
         pageChange(pageNumber){
-            this.displayLists = this.articles.slice(this.pageSize*(pageNumber -1), this.pageSize*(pageNumber));
+            this.displayList = this.articles.slice(this.pageSize*(pageNumber -1), this.pageSize*(pageNumber));
         },
         resultChange(pageNumber){
             this.displayResults = this.result.slice(this.pageSize*(pageNumber -1), this.pageSize*(pageNumber));
@@ -463,11 +463,7 @@ export default {
                     text-decoration: none;
                     border-radius: 5px;
                     margin-top:10px;
-                    .post-txt{
-                        color:white;
-                        text-decoration: none;
-                        display: block;
-                    }
+                    color:white;
                 }
                 .post-btn:hover{
                     opacity: 0.8;

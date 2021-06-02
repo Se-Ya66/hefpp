@@ -71,7 +71,7 @@ export default {
     computed:{
         judgeType(){
             if(this.userid === 1){
-            this.isView = true
+                this.isView = true
             }
         },
         ...mapState('message', [

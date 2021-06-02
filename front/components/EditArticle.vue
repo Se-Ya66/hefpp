@@ -228,9 +228,6 @@ export default {
                     console.log(err);
                 });
                 this.$router.push({ path: `/article/${this.$route.params.id}` })
-                this.$router.go({path: this.$router.currentRoute.path, force: true})
-
-            
         },
         confirmImage(e) {
             this.file = e.target.files[0];

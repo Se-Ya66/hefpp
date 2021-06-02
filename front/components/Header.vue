@@ -10,7 +10,6 @@
         </v-toolbar-title>
         <v-spacer></v-spacer>
         <span>{{user.name}}</span>
-        <!-- <span>{{member.name}}</span> -->
         <v-toolbar-items>
             <v-menu 
             transition="slide-y-transition"
@@ -20,40 +19,16 @@
             open-on-click
             >
                 <template #activator="{ on }">
-                    <!-- <v-btn
-                    v-if="!profile.file_path"
-                    v-on="on" 
-                    :ripple="false"
-                    large 
-                    fab
-                    plain
-                    >
-                        <v-avatar size="50"
-                        >
-                            <img src="../static/image.jpg">
-                        </v-avatar>
-                    </v-btn>
-                    <v-btn
-                    v-else
-                    v-on="on" 
-                    icon
-                    large 
-                    fab
-                    >
-                        <v-avatar size="50"
-                        >
-                            <img :src="profile.file_path">
-                        </v-avatar>
-                    </v-btn> -->
                     <v-btn
                     v-on="on" 
                     icon
                     large 
                     fab
                     >
-                        <v-avatar size="50"
-                        >
+                        <v-avatar size="50">
                             <img :src="newIcon(user.id)">
+                            <!-- <img :src="profile.file_path" v-if="profile.file_path">
+                            <img src="../static/image.jpg" v-else> -->
                         </v-avatar>
                     </v-btn>
                 </template>
@@ -112,17 +87,17 @@ export default {
         },
     },
     created () {
-        this.$store.dispatch('users/show',this.$route.params.id);
-        // this.$store.dispatch('profile/showProfile',this.user.id);
+        this.$store.dispatch('users/show',this.user.id);
+        this.$store.dispatch('profile/showProfile',this.user.id);
         this.$store.dispatch('profile/loadProfiles');
     },
     computed:{
         ...mapState('users', [
             'member',
         ]),
-        // ...mapState('profile', [
-        //     'profile',
-        // ]),
+        ...mapState('profile', [
+            'profile',
+        ]),
         ...mapState('profile', [
             'profiles',
         ]),
