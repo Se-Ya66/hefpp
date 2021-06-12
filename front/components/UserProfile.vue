@@ -118,7 +118,7 @@
                                             :to="`/article/${article.id}`"
                                             >
                                                 <img :src="article.file_path" class="article-img" v-if="article.file_path">
-                                                <img src="../static/noimage.jpg" class="article-img" v-else>
+                                                <img src="../static/noimagebig.jpg" class="articlelist-img" v-else>
                                                 <h2 class="card-title">
                                                     {{article.title}}
                                                 </h2>
@@ -166,6 +166,7 @@ export default {
         this.$store.dispatch('article/loadArticles');
         this.$store.dispatch('profile/showProfile',this.$route.params.id);
         this.$store.dispatch('users/show',this.$route.params.id);
+        
     },
     computed:{
         ...mapState('article', [
@@ -234,7 +235,7 @@ export default {
         .user-item{
             margin:20px;
             .recruit-card{
-                height:200px;
+                height:300px;
                 .card-title{
                     white-space: nowrap;
                     overflow: hidden;
@@ -274,6 +275,11 @@ export default {
             .article-img{
                 width:100%;
                 object-fit: cover;
+            }
+            .articlelist-img{
+                width:100px;
+                object-fit: cover;
+                margin: 0 auto;
             }
         }
     }

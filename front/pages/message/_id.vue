@@ -88,7 +88,7 @@ export default {
         async postMessages(){
             await this.$store.dispatch('message/postMessages', this.message);
             this.message.text = '';
-            this.$router.go({path: this.$router.currentRoute.path, force: true})
+            this.$store.dispatch('message/show',this.$route.params.id);
         },
         newMember (userId) {
             const idx = this.members.findIndex(p => p.id == userId)

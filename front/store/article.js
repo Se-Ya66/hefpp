@@ -1,7 +1,7 @@
 export const state = () => ({
     articles: [],
-    article: [],
-    
+    article: {},
+    message:''
 })
 
 export const getters = {
@@ -16,29 +16,51 @@ export const mutations = {
     createArticles(state, data){
         state.articles.push(data)
     },
+    updateArticle (state, response) {
+        const idx = state.articles.findIndex(p => p.user_id == response.user_id)
+        state.articles.splice(idx, 1, response)
+    },
     deleteArticles(state, index) {
         state.articles.splice(index, 1);
     },
     showArticles(state, article){
         state.article = article
     },
+    setMessage(state, message){
+        state.message = message
+    }
 }
 
 export const actions = {
     loadArticles({commit}){
         this.$axios.get('/articles').then(data =>{
-        let articles = data.data
+        // let articles = data.data
+        let articles = data.data.result.data
         commit('setArticles', articles)
-
         })
-        .catch(error => {
-        console.log(error)
+        .catch(err => {
+        console.log(err)
         })
     },
+    // loadPosts({commit}, page){
+    //     this.$axios.get('/articles', {
+    //         params: {
+    //             page: parseInt(page),
+    //         },
+    //     }).then(res =>{
+    //         let articles = res.data.result
+    //         commit('setArticles', articles)
+    //         console.log(articles)
+    //     })
+    //     .catch(err => {
+    //         console.log(err)
+    //     })
+    // },
     async postArticles({ commit }, article){
         const data = await this.$axios.post('/articles', article)
         .catch(err => {
             console.log(err)
+            commit('setMessage', err.response.data.errors.file[0])
         })
         commit('createArticles', data)
     },
@@ -47,8 +69,8 @@ export const actions = {
         this.$axios.delete('/articles/'+ article.id).then(res =>{
             commit('deleteArticles', index);
         })
-        .catch(error=>{
-            console.log(error)
+        .catch(err=>{
+            console.log(err)
         })
     },
     show({commit} , articleId){
@@ -56,8 +78,8 @@ export const actions = {
             let article = data.data
             commit('showArticles', article)
         })
-        .catch(error=>{
-            console.log(error)
+        .catch(err=>{
+            console.log(err)
         })
     },
     async update ({ commit }, {articleId, article}) {
@@ -65,7 +87,7 @@ export const actions = {
         .catch(err => {
             console.log(err)
         })
-        commit('setArticles', response)
+        commit('updateArticle', response)
     },
     
 }

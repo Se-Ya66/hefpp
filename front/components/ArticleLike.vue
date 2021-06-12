@@ -30,7 +30,7 @@ export default {
             liked:false,
         }
     },
-    mounted () {
+    created() {
         this.hasfavorites();
         this.count(); 
     },
@@ -57,7 +57,7 @@ export default {
             });
         },
         count() {
-            this.$axios.get('/articles/' + this.post.id +'/count')
+            this.$axios.get('/articles/' + this.$route.params.id +'/count')
             .then(res => {
                 this.num = res.data.count;
             }).catch(function(error){
@@ -65,7 +65,7 @@ export default {
             });
         },
         hasfavorites() { 
-            this.$axios.get(`/articles/${this.post.id}/hasfavorites`)
+            this.$axios.get(`/articles/${this.$route.params.id}/hasfavorites`)
             .then(res => {
                 this.liked = res.data.result;
                 console.log(this.liked);

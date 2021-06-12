@@ -23,8 +23,8 @@ export const actions = {
         let members = data.data
         commit('setMembers', members)
         })
-        .catch(error => {
-        console.log(error)
+        .catch(err => {
+        console.log(err)
         })
     },
     show({commit} , memberId){
@@ -32,8 +32,8 @@ export const actions = {
             let member = data.data
             commit('showMember', member)
         })
-        .catch(error=>{
-            console.log(error)
+        .catch(err=>{
+            console.log(err)
         })
     },
     async update ({ commit }, member) {

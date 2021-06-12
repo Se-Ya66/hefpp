@@ -92,10 +92,12 @@ class ProfileController extends Controller
     public function updateimage(Request $request, $id)
     {
         $this->validate($request, [
-            'file' => 'required|image'
+            'file' => 'required|image|mimes:jpeg,png,jpg,gif|max:1024'
         ], [
+            'file.required' => '画像が選択されていません',
             'file.image' => '画像ファイルではありません',
-            'file.required' => '画像を選択してください',
+            "file.mines" => "指定された拡張子（PNG/JPG/GIF）ではありません。",
+            "file.max" => "容量が1Ｍを超えています。",
         ]);
 
         $id = $request->user()->id;

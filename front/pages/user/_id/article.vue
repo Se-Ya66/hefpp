@@ -109,8 +109,9 @@ export default {
             dialog:false,
         }
     },
-    mounted () {
+    created() {
         this.$store.dispatch('article/loadArticles');
+        this.$store.dispatch('profile/loadProfiles');
     },
     methods: {
         destroyArticle(articleId){
@@ -121,6 +122,9 @@ export default {
     computed:{
         ...mapState('article', [
             'articles',
+        ]),
+        ...mapState('profile', [
+            'profiles',
         ]),
         myArticles(){
             let num = Number(this.$route.params.id);

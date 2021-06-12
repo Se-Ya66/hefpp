@@ -26,17 +26,11 @@
                         value="加工"
                         ></v-radio>
                     </v-radio-group>
-                    <!-- <div 
-                    class="mb-3"
-                    v-if="confirmedImage"
-                    >   
-                        <img :src="confirmedImage" />
-                    </div>
-                    <input class="mb-3" type="file" @change="confirmImage" /> -->
                     <p v-if="confirmedImage">
                         <img class="article-img" :src="confirmedImage" />
                     </p>
                     <input type="file" @change="confirmImage"  class="mb-3"/>
+                    <p class="error-text">{{message}}</p>
                     <v-select
                     :items="items"
                     outlined
@@ -118,6 +112,7 @@
 </template>
 
 <script>
+import {  mapState } from 'vuex';
 
 export default {
     data(){
@@ -185,8 +180,8 @@ export default {
                 required: value => !!value || ' 必須項目です',
                 counter: value => value.length <= 50 || '50文字以内で指定してください',
                 counter2: value => value.length <= 300 || '300文字以内で指定してください',
-                
             },
+            // message:''
         }
     },
     methods:{
@@ -207,8 +202,8 @@ export default {
             // this.$router.go({path: this.$router.currentRoute.path, force: true})
         },
         confirmDialog(){
-            this.dialog = true;
             if(this.$refs.post_form.validate()){
+                this.dialog = true;
             }
         },
         confirmImage(e) {
@@ -226,7 +221,12 @@ export default {
                 this.confirmedImage = e.target.result;
             };
         },
-    }
+    },
+    computed:{
+        ...mapState('article', [
+            'message',
+        ]),
+    },
 }
 </script>
 

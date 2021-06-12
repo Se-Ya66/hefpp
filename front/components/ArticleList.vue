@@ -79,6 +79,7 @@
                                 <img src="../static/noimage.jpg" class="article-img" v-else>
                             </nuxt-link>
                             <span class="user-type-production">{{article.type}}</span>
+                            <span class="ml-3">{{article.prefecture}}</span>
                             <h2 class="mt-2 mb-2">{{article.title}}</h2>
                             <p>{{article.body}}</p>
                             <div class="article-user ">
@@ -89,7 +90,6 @@
                                 </nuxt-link>
                                 <div class="article-userinfo">
                                     <span class="article-user-name">{{newMember(article.user_id)}}</span>
-                                    <span>{{article.prefecture}}</span>
                                 </div>
                             </div>
                         </div>
@@ -97,7 +97,7 @@
                             <v-pagination
                             v-model="page"
                             :length="resultLength"
-                            @input = "resultChange"
+                            @input="resultChange"
                             ></v-pagination>
                         </v-container>
                     </div>
@@ -105,7 +105,7 @@
                         <div class="article-count">
                             <span>{{articles.length}}/{{articles.length}}件</span>
                         </div>
-                        <div class="article-item" v-for="(article, id) in displayList" :key="id">
+                        <div class="article-item" v-for="(article, id) in articles" :key="id">
                             <nuxt-link :to="`/article/${article.id}`">
                                 <img :src="article.file_path" class="article-img" v-if="article.file_path">
                                 <img src="../static/noimage.jpg" class="article-img" v-else>
@@ -128,8 +128,8 @@
                         <v-container class="max-width">
                             <v-pagination
                             v-model="page"
-                            :length="length"
-                            @input = "pageChange"
+                            :length="lastPage"
+                            @input="getPosts"
                             ></v-pagination>
                         </v-container>
                     </div>
@@ -297,20 +297,18 @@ export default {
                 "沖縄"
             ],
             result:[],
-            displayList:[],
-            pageSize: 5,
-            page:1,
-            length:'',
-            resultLength:'',
+            pageSize:5,
+            page:1,		
+            lastPage:1,
+            resultLength:0,
             displayResult:[],
+            articles:{}
         }
     },
     created () {
-        this.$store.dispatch('article/loadArticles');
         this.$store.dispatch('users/loadMembers');
         this.$store.dispatch('profile/loadProfiles');
-        this.length = Math.ceil(this.articles.length/this.pageSize);
-        this.displayList = this.articles.slice(this.pageSize*(this.page -1), this.pageSize*(this.page));
+        this.getPosts(this.page)
     },
     methods: {
         newMember(userId){
@@ -326,7 +324,7 @@ export default {
                 return ''
             }
             if(!this.profiles[idx].file_path){
-                return '/_nuxt/static/image.jpg'
+                return '../image.jpg'
             } else {
                 return this.profiles[idx].file_path
             }
@@ -334,26 +332,26 @@ export default {
         searchType(){
             this.result = [];
             this.listShow = true;
-            for(let i=0; i<this.$store.state.article.articles.length; i++){
+            for(let i=0; i<this.articles.length; i++){
                 let isShow = false;
                 if (this.showProcessing && this.showProduction) {
                     return
                 }
-                if (this.showProduction && this.$store.state.article.articles[i].type == "生産") {
+                if (this.showProduction && this.articles[i].type == "生産") {
                     isShow = true;
                 }
-                if (this.showProcessing && this.$store.state.article.articles[i].type == "加工") {
+                if (this.showProcessing && this.articles[i].type == "加工") {
                     isShow = true;
                 }
                 if (this.showPrefecture) {
-                    if (this.showPrefecture == this.$store.state.article.articles[i].prefecture) {
+                    if (this.showPrefecture == this.articles[i].prefecture) {
                         isShow = true;
                     } else {
                         isShow = false
                     }
                 }
                 if (isShow) {
-                    this.result.push(this.$store.state.article.articles[i]);
+                    this.result.push(this.articles[i]);
                 }
             }
             this.showPrefecture= '';
@@ -361,8 +359,10 @@ export default {
             this.showProcessing='';
             this.resultLength = Math.ceil(this.result.length/this.pageSize);
             this.displayResult = this.result.slice(this.pageSize*(this.page -1), this.pageSize*(this.page));
-            return this.resultLength;
-            return this.displayResult;
+            return {
+                1: this.resultLength,
+                2: this.displayResult
+            }
         },
         resetList(){
             this.listShow = false;
@@ -373,32 +373,31 @@ export default {
         wordSearch(){
             this.result = [];
             this.listShow = true;
-            for(let i=0; i<this.$store.state.article.articles.length; i++){
+            for(let i=0; i<this.articles.length; i++){
                 let isShow = false;
                 if (this.keyword) {
-                    if (this.$store.state.article.articles[i].body.includes(this.keyword)) {
+                    if (this.articles[i].body.includes(this.keyword)) {
                         isShow = true;
                     } else {
                         isShow = false
                     }
-                    if (this.$store.state.article.articles[i].title.includes(this.keyword)) {
+                    if (this.articles[i].title.includes(this.keyword)) {
                         isShow = true;
                     } else {
                         isShow = false
                     }
                 }
                 if (isShow) {
-                    this.result.push(this.$store.state.article.articles[i]);
+                    this.result.push(this.articles[i]);
                 }
             }
             this.keyword = '';
             this.resultLength = Math.ceil(this.result.length/this.pageSize);
             this.displayResult = this.result.slice(this.pageSize*(this.page -1), this.pageSize*(this.page));
-            return this.resultLength;
-            return this.displayResult;
-        },
-        pageChange(pageNumber){
-            this.displayList = this.articles.slice(this.pageSize*(pageNumber -1), this.pageSize*(pageNumber));
+            return {
+                1: this.resultLength,
+                2: this.displayResult
+            }
         },
         resultChange(pageNumber){
             this.displayResults = this.result.slice(this.pageSize*(pageNumber -1), this.pageSize*(pageNumber));
@@ -414,11 +413,22 @@ export default {
                 this.$router.push({ path: '/article/post' })
             }
         },
+        getPosts(page) {
+            this.$axios.get('/articles', {
+                params: {
+                    page: parseInt(page),
+                },
+            }).then(res =>{
+                let articles = res.data.result
+                this.articles = articles.data			
+                this.lastPage = articles.last_page
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        },
     },
     computed:{
-        ...mapState('article', [
-            'articles',
-        ]),
         ...mapState('users', [
             'members',
         ]),
@@ -426,7 +436,6 @@ export default {
             'profiles',
         ]),
     },
-    
 }
 </script>
 

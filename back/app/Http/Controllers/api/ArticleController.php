@@ -18,9 +18,11 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        // $articles = Article::all();
-        $articles = Article::orderBy('created_at', 'desc')->get();
-        return $articles;
+        // $articles = Article::orderBy('created_at', 'desc')->get();
+        // return $articles;
+
+        $data = Article::orderBy('created_at', 'desc')->paginate(5);
+        return response()->json(['result' => $data]);
     }
 
     /**
@@ -44,6 +46,13 @@ class ArticleController extends Controller
     {
 
         if (request()->file){
+            $this->validate($request, [
+                'file' => 'image|mimes:jpeg,png,jpg,gif|max:1024'
+            ], [
+                'file.image' => '画像ファイルではありません',
+                "file.mines" => "指定された拡張子（PNG/JPG/GIF）ではありません。",
+                "file.max" => "容量が1Ｍを超えています。",
+            ]);
             $article = $request->file('file');
             $path = Storage::disk('s3')->put('article', $article, 'public');
 
@@ -101,6 +110,14 @@ class ArticleController extends Controller
 
     public function updateimage(Request $request, $id)
     {
+        $this->validate($request, [
+            'file' => 'required|image|mimes:jpeg,png,jpg,gif|max:1024'
+        ], [
+            'file.required' => '画像が選択されていません',
+            'file.image' => '画像ファイルではありません',
+            "file.mines" => "指定された拡張子（PNG/JPG/GIF）ではありません。",
+            "file.max" => "容量が1Ｍを超えています。",
+        ]);
         $article = Article::find($id);
         $image = $request->file('file');
         $path = Storage::disk('s3')->put('article', $image, 'public');

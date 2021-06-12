@@ -13,6 +13,7 @@
                     >
                         写真を変更
                     </div>
+                    <p class="error-text">{{message}}</p>
                     <h2>タイトル</h2>
                     <v-container>
                         <v-text-field
@@ -199,6 +200,7 @@ export default {
                 counter: value => value.length <= 50 || '50文字以内で指定してください',
                 counter2: value => value.length <= 300 || '300文字以内で指定してください',
             },
+            message:''
         }
     },
     created () {
@@ -218,16 +220,16 @@ export default {
         },
         updateImage(){
                 let data = new FormData();
-                    data.append("file", this.file);
-            this.$axios
-                .post(`/${this.$route.params.id}/article/image`, data)
+                data.append("file", this.file);
+                this.$axios.post(`/${this.$route.params.id}/article/image`, data)
                 .then(response => {
                     this.file = "";
+                    this.$router.push({ path: `/article/${this.$route.params.id}` })
                 })
                 .catch(err => {
                     console.log(err);
+                    this.message = err.response.data.errors.file[0];
                 });
-                this.$router.push({ path: `/article/${this.$route.params.id}` })
         },
         confirmImage(e) {
             this.file = e.target.files[0];
@@ -271,6 +273,11 @@ export default {
         }
         p{
             font-size:1.1rem;
+        }
+        .error-text{
+            text-align: center;
+            color:red;
+            font-size:0.8rem;
         }
     }
 

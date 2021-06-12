@@ -134,7 +134,7 @@
                                         >
                                             変更
                                         </div>
-                                        <p>{{message}}</p>
+                                        <p class="error-message">{{message}}</p>
                                     </v-container>
                                 </div>
                                 <div class="edit-profile-form">
@@ -426,7 +426,6 @@ export default {
                 })
                 .catch(err => {
                     console.log(err);
-                    console.log(err.response.data.errors);
                     this.message = err.response.data.errors.file[0];
                 });
             }

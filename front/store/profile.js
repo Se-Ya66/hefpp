@@ -1,6 +1,6 @@
 export const state = () => ({
     profiles: [],
-    profile: [],
+    profile: {},
 })
 
 export const getters = {
@@ -15,6 +15,10 @@ export const mutations = {
     showProfile (state, profile) {
         state.profile = profile
     },
+    updateProfile (state, response) {
+        const idx = state.profiles.findIndex(p => p.user_id == response.user_id)
+        state.profiles.splice(idx, 1, response)
+    },
     createProfile(state, profile){
         state.profile.push(profile)
     },
@@ -26,8 +30,8 @@ export const actions = {
         let profiles = data.data
         commit('setProfile', profiles)
         })
-        .catch(error => {
-        console.log(error)
+        .catch(err => {
+        console.log(err)
         })
     },
     showProfile({commit} , profileId){
@@ -35,8 +39,8 @@ export const actions = {
             let profile = data.data
             commit('showProfile', profile)
         })
-        .catch(error=>{
-            console.log(error)
+        .catch(err=>{
+            console.log(err)
         })
     },
     async create({ commit }, profile){
@@ -44,31 +48,15 @@ export const actions = {
         .catch(err => {
             console.log(err)
         })
-        commit('setProfile', data)
+        commit('updateProfile', data)
     },
     async update ({ commit }, {userId, profile}) {
         const response = await this.$axios.$put(`/profiles/${userId}`, profile)
         .catch(err => {
             console.log(err)
         })
-        commit('setProfile', response)
+        commit('updateProfile', response)
     },
-    // async update ({ commit }, profile) {
-    //     const response = await this.$axios.put(`/profiles/${profile.id}`, 
-    //     {
-    //         prefecture:profile.prefecture,
-    //         type:profile.type,
-    //         file:profile.image,
-    //         url:profile.url,
-    //         introduction:profile.introduction,
-    //         address:profile.address,
-    //         tel:profile.tel
-    //     })
-    //     .catch(err => {
-    //         console.log(err)
-    //     })
-    //     commit('setProfile', response)
-    // },
     async updateImage ({ commit }, profile) {
         const response = await this.$axios.put(`/${profile.id}/image`, 
         {

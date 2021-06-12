@@ -17,7 +17,7 @@
                 </div>
                 <p>{{article.created_at}}</p>
                 <img :src="article.file_path" class="article-img" v-if="article.file_path">
-                <img src="../../../static/noimage.jpg" class="article-img" v-else>
+                <img src="../../../static/noimage.jpg" class="showarticle-img" v-else>
                 <v-container>
                     <div class="article-bottom-wrapper">
                         <v-row justify="space-between">
@@ -55,6 +55,10 @@ import articlelike from '~/components/ArticleLike.vue'
 import { mapState } from "vuex"
 
 export default {
+    // async fetch ({ store }) {
+    //     const article = await store.dispatch('article/show', this.$route.params.id)
+    //     store.commit('article/showArticles', article)
+    // },
     components:{
         Header,
         Footer,
@@ -73,6 +77,9 @@ export default {
         ...mapState('article', [
             'article',
         ]),
+        // article(){
+        //     return this.$store.getters['article/showArticles']
+        // },
         ...mapState('users', [
             'members',
         ]),
@@ -91,10 +98,10 @@ export default {
         newIcon(userId){
             const idx = this.profiles.findIndex(p => p.user_id == userId)
             if(idx < 0){
-                return ''
+                return '../image.jpg'
             }
             if(!this.profiles[idx].file_path){
-                return '/_nuxt/static/image.jpg'
+                return '../image.jpg'
             } else {
                 return this.profiles[idx].file_path
             }
@@ -135,10 +142,11 @@ export default {
             }
         }
     }
-    .article-img{
-        width:100%;
+    .showarticle-img{
+        width:200px;
         height:200px;
         object-fit: cover;
+        margin: 0 auto;
         @include sp {
             height:100px;
         };

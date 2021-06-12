@@ -62,9 +62,9 @@ export default {
     methods: {
         async login() {
           try {
-              await this.$auth.login({ data: this.form });
+            await this.$auth.login({ data: this.form });
           } catch(e) {
-              return;
+            return;
           }
           this.$store.dispatch('flashMessage/showMessage',{
             message: 'ログインしました',
@@ -96,11 +96,11 @@ export default {
 <style lang="scss">
 .top-wrapper{
   width:100%;
-  height:100vh;
+  min-height:100vh;
   background: url('../static/top.jpg') center center / cover no-repeat fixed;
   .top-inner{
     width:100%;
-    height:100vh;
+    min-height:100vh;
     .word-box{
       color:white;
       text-align: center;
@@ -136,10 +136,6 @@ export default {
       }
       p{
         font-size:14px;
-      }
-      .error-message{
-        text-align: left;
-        color:red;
       }
       .test-login{
         color: #1976d2;
