@@ -23,7 +23,7 @@ export const mutations = {
     deleteArticles(state, index) {
         state.articles.splice(index, 1);
     },
-    showArticles(state, article){
+    showArticle(state, article){
         state.article = article
     },
     setMessage(state, message){
@@ -42,28 +42,26 @@ export const actions = {
         console.log(err)
         })
     },
-    // loadPosts({commit}, page){
-    //     this.$axios.get('/articles', {
-    //         params: {
-    //             page: parseInt(page),
-    //         },
-    //     }).then(res =>{
-    //         let articles = res.data.result
-    //         commit('setArticles', articles)
-    //         console.log(articles)
-    //     })
+    async postArticles({ commit }, article) {
+        const data = await this.$axios.post('/articles', article)
+        await new Promise((resolve, reject) => {
+            this.$axios.post('/articles', article)
+            .then(response => {
+                resolve(response)
+            }).catch(error => {
+                reject(error)
+            }).finally(() => {
+                commit('createArticles', data)
+            })
+        })
+    },
+    // async postArticles({ commit }, article){
+    //     const data = await this.$axios.post('/articles', article)
     //     .catch(err => {
     //         console.log(err)
     //     })
+    //     commit('createArticles', data)
     // },
-    async postArticles({ commit }, article){
-        const data = await this.$axios.post('/articles', article)
-        .catch(err => {
-            console.log(err)
-            commit('setMessage', err.response.data.errors.file[0])
-        })
-        commit('createArticles', data)
-    },
     delete({state, commit}, article){
         const index = state.articles.indexOf(article);
         this.$axios.delete('/articles/'+ article.id).then(res =>{
@@ -76,7 +74,7 @@ export const actions = {
     show({commit} , articleId){
         this.$axios.get('/articles/' + articleId).then(data =>{
             let article = data.data
-            commit('showArticles', article)
+            commit('showArticle', article)
         })
         .catch(err=>{
             console.log(err)

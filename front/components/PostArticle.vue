@@ -181,11 +181,11 @@ export default {
                 counter: value => value.length <= 50 || '50文字以内で指定してください',
                 counter2: value => value.length <= 300 || '300文字以内で指定してください',
             },
-            // message:''
+            message:''
         }
     },
     methods:{
-        async postArticles(){
+        postArticles(){
             let data = new FormData();
             data.append("title", this.article.title);
             data.append("body", this.article.body);
@@ -193,13 +193,18 @@ export default {
             data.append("type", this.article.type);
             data.append("prefecture", this.article.prefecture);
             data.append("conditions", this.article.conditions);
-            await this.$store.dispatch('article/postArticles', data);
-            this.$store.dispatch('flashMessage/showMessage',{
-                message: '投稿しました',
-                status: true
+            this.$store.dispatch('article/postArticles', data)
+            .then(response => {
+                this.$store.dispatch('flashMessage/showMessage',{
+                    message: '投稿しました',
+                    status: true
+                })
+                this.$router.push({name: 'main'});
+            }, error => {
+                this.dialog = false;
+                this.message = error.response.data.errors.file[0];
+                console.log(error.response.data.errors);
             })
-            this.$router.push({name: 'main'});
-            // this.$router.go({path: this.$router.currentRoute.path, force: true})
         },
         confirmDialog(){
             if(this.$refs.post_form.validate()){
@@ -223,9 +228,9 @@ export default {
         },
     },
     computed:{
-        ...mapState('article', [
-            'message',
-        ]),
+        // ...mapState('article', [
+        //     'message',
+        // ]),
     },
 }
 </script>

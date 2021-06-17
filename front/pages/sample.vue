@@ -63,58 +63,27 @@
 </template>
 
 <script>
-import { mapState } from "vuex"
-
-import Header from '~/components/Header.vue'
-
+import {  mapState, mapActions } from 'vuex';
 export default {
-  components:{
-    Header
-  },
   data(){
     return{
-      items:[
-        '北海道',
-        '青森県',
-        '岩手県',
-        '宮城県',
-        '秋田県',
-        '山形県',
-        '福島県',
-        '茨城県',
-      ],
-      displayList:[],
-      page: 1,		
-      lastPage: 1,	
-      articles:{}
+      myArticle:{
+          title:this.article.title,
+          body:this.article.body,
+          conditions:this.article.conditions,
+          type:this.article.type,
+          prefecture:this.article.prefecture,
+      },
     }
   },
-  created(){
-    this.getPosts(this.page)
-    // this.lastPage = this.articles.last_page
+  created () {
+    this.$store.dispatch('article/show',this.$route.params.id);
   },
   computed:{
-    // ...mapState('article', [
-    //     'articles',
-    // ]),
+    ...mapState('article', [
+      'article',
+    ]),
   },
-  methods:{
-    getPosts(page) {
-            // this.$store.dispatch('article/loadPosts', page);
-            this.$axios.get('/articles', {
-            params: {
-                page: parseInt(page),
-            },
-        }).then(res =>{
-            let articles = res.data.result
-            this.articles = articles.data			// 都道府県リストを設定
-            this.lastPage = articles.last_page
-        })
-        .catch(err => {
-            console.log(err)
-        })
-    },
-  }
 }
 </script>
 

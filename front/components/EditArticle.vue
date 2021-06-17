@@ -16,16 +16,19 @@
                     <p class="error-text">{{message}}</p>
                     <h2>タイトル</h2>
                     <v-container>
+                        <p class="post-value">{{article.title}}</p>
                         <v-text-field
                         outlined
                         v-model="myarticle.title"
                         :rules="[rules.required, rules.counter]"
                         maxlength="50"
                         counter
+                        clearable
                         />
                     </v-container>
                     <h2>種別</h2>
                     <v-container>
+                        <p class="post-value">{{article.type}}</p>
                         <v-radio-group
                         v-model="myarticle.type"
                         row
@@ -42,6 +45,7 @@
                         </v-radio-group>
                     </v-container>
                     <h2>都道府県</h2>
+                    <p class="post-value">{{article.prefecture}}</p>
                     <v-container>
                         <v-select
                         :items="items"
@@ -52,6 +56,7 @@
                         />
                     </v-container>
                     <h2>詳細</h2>
+                    <p class="post-value">{{article.body}}</p>
                     <v-container>
                         <v-textarea 
                         outlined
@@ -59,9 +64,11 @@
                         :rules="[rules.required, rules.counter2]"
                         maxlength="300"
                         counter
+                        clearable
                         />
                     </v-container>
                     <h2>条件</h2>
+                    <p class="post-value">{{article.conditions}}</p>
                     <v-container>
                         <v-textarea 
                         type="tel"
@@ -70,14 +77,22 @@
                         :rules="[rules.required, rules.counter2]"
                         maxlength="300"
                         counter
+                        clearable
                         />
                     </v-container>
                 </v-form>
             </div>
-            <div class="edit-btn confirm-btn"
-            @click="confirmArticle"
-            >
-                確認する
+            <div class="two-btns">
+                <div class="edit-btn copy-btn"
+                @click="copyArticle"
+                >
+                    参照する
+                </div>
+                <div class="edit-btn"
+                @click="confirmArticle"
+                >
+                    確認する
+                </div>
             </div>
             <transition name="confirm">
                 <div class="bg" v-show="dialog">
@@ -143,7 +158,7 @@ export default {
                 type:'',
                 prefecture:'',
             },
-            confirmedImage: "",
+            confirmedImage:'',
             file:'',
             dialog:false,
             items:[
@@ -205,7 +220,7 @@ export default {
     },
     created () {
         this.$store.dispatch('article/show',this.$route.params.id);
-        Object.assign(this.myarticle,this.article);
+        
     },
     methods: {
         ...mapActions('article', ['update']),
@@ -219,17 +234,17 @@ export default {
             }
         },
         updateImage(){
-                let data = new FormData();
-                data.append("file", this.file);
-                this.$axios.post(`/${this.$route.params.id}/article/image`, data)
-                .then(response => {
-                    this.file = "";
-                    this.$router.push({ path: `/article/${this.$route.params.id}` })
-                })
-                .catch(err => {
-                    console.log(err);
-                    this.message = err.response.data.errors.file[0];
-                });
+            let data = new FormData();
+            data.append("file", this.file);
+            this.$axios.post(`/${this.$route.params.id}/article/image`, data)
+            .then(response => {
+                this.file = "";
+                this.$router.push({ path: `/article/${this.$route.params.id}` })
+            })
+            .catch(err => {
+                console.log(err);
+                this.message = err.response.data.errors.file[0];
+            });
         },
         confirmImage(e) {
             this.file = e.target.files[0];
@@ -246,6 +261,9 @@ export default {
                 this.confirmedImage = e.target.result;
             };
         },
+        copyArticle(){
+            Object.assign(this.myarticle, this.article);
+        }
     },
     computed:{
         ...mapState('article', [
@@ -266,6 +284,10 @@ export default {
         object-fit: cover;
     }
     .article-edit-inner{
+        .post-value{
+            font-size:1.2rem;
+            margin-bottom:20px;
+        }
         h2{
             font-size:1.4rem;
             margin-bottom: 10px;
@@ -278,6 +300,16 @@ export default {
             text-align: center;
             color:red;
             font-size:0.8rem;
+        }
+    }
+    .two-btns{
+        display:flex;
+        justify-content: center;
+        margin-bottom:20px;
+        .copy-btn{
+            margin-right:10px;
+            background: linear-gradient(to right, #155799, #159957);
+
         }
     }
 
