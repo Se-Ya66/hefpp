@@ -37,7 +37,7 @@
                 ログイン
               </v-btn>
             </v-form>
-            <p>ゲストユーザーで<span class="test-login" @click="testLogin">ログイン</span></p>
+            <p>テストユーザーで<span class="test-login" @click="testLogin">ログイン</span></p>
             <p>アカウントをお持ちでないですか？
               <nuxt-link to="/register">新規登録</nuxt-link>
             </p>
@@ -54,8 +54,8 @@ export default {
     data() {
       return {
         form: {
-            email: '',
-            password: ''
+          email: '',
+          password: ''
         },
       }
     },

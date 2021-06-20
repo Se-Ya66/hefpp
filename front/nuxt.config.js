@@ -76,7 +76,7 @@ export default {
     },
     redirect: {
       login: '/',
-      home: '/'
+      home: '/main'
     },
   },
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify

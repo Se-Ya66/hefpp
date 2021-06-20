@@ -32,7 +32,9 @@
                                     <v-icon>
                                         mdi-link-variant
                                     </v-icon>
-                                    <a href="https://www.yahoo.co.jp/">{{profile.url}}</a>
+                                    <a class="user-url" :href="profile.url">
+                                        {{profile.url}}
+                                    </a>
                                 </span>
                             </div>
                             <follow-button :userId="$route.params.id"/>
@@ -61,7 +63,7 @@
                             <div class="user-item">
                                 <h1>紹介</h1>
                                 <v-container>
-                                <div>
+                                <div class="user-introduction">
                                     {{profile.introduction}}
                                 </div>
                                 </v-container>
@@ -82,19 +84,15 @@
                                             <v-icon>
                                                 mdi-link-variant
                                             </v-icon>
-                                            <a :href="profile.url">{{profile.url}}</a>
+                                            <a :href="profile.url">
+                                                {{profile.url}}
+                                            </a>
                                         </li>
                                         <li>
                                             <v-icon>
                                                 mdi-phone
                                             </v-icon>
                                             {{profile.tel}}
-                                        </li>
-                                        <li>
-                                            <v-icon>
-                                                mdi-flag
-                                            </v-icon>
-                                            2019/9 に設立
                                         </li>
                                     </ul>
                                 </div>
@@ -166,7 +164,6 @@ export default {
         this.$store.dispatch('article/loadArticles');
         this.$store.dispatch('profile/showProfile',this.$route.params.id);
         this.$store.dispatch('users/show',this.$route.params.id);
-        
     },
     computed:{
         ...mapState('article', [
@@ -183,9 +180,7 @@ export default {
             const posts = this.articles.filter(item => item.user_id === num);
             return posts;
         },
-        
     },
-    
 }
 </script>
 
@@ -210,6 +205,9 @@ export default {
                 display: flex;
                 align-items: center;
                 margin-top:10px ;
+                .user-url{
+                    font-size:0.9rem;
+                }
                 span:nth-child(1){
                     margin-right: 20px;
                 }
@@ -280,6 +278,9 @@ export default {
                 width:100px;
                 object-fit: cover;
                 margin: 0 auto;
+            }
+            .user-introduction{
+                font-size:1.1rem;
             }
         }
     }

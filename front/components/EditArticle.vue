@@ -3,9 +3,11 @@
         <v-container>
             <div class="article-edit-inner">
                 <v-form ref="article_form">
-                    <img :src="article.file_path" class="article-img" v-if="article.file_path">
                     <p v-if="confirmedImage">
                         <img class="article-img" :src="confirmedImage" />
+                    </p>
+                    <p v-else>
+                        <img :src="article.file_path" class="article-img" v-if="article.file_path">
                     </p>
                     <input class="mb-3" type="file" @change="confirmImage" />
                     <div class="edit-btn confirm-btn"
@@ -62,8 +64,7 @@
                         outlined
                         v-model="myarticle.body"
                         :rules="[rules.required, rules.counter2]"
-                        maxlength="300"
-                        counter
+                        counter="300"
                         clearable
                         />
                     </v-container>
@@ -75,8 +76,7 @@
                         outlined
                         v-model="myarticle.conditions"
                         :rules="[rules.required, rules.counter2]"
-                        maxlength="300"
-                        counter
+                        counter="300"
                         clearable
                         />
                     </v-container>
@@ -213,7 +213,7 @@ export default {
             rules: {
                 required: value => !!value || ' 必須項目です',
                 counter: value => value.length <= 50 || '50文字以内で指定してください',
-                counter2: value => value.length <= 300 || '300文字以内で指定してください',
+                counter: value => value.length <= 300 || '50文字以内で指定してください',
             },
             message:''
         }
@@ -248,6 +248,10 @@ export default {
         },
         confirmImage(e) {
             this.file = e.target.files[0];
+            if(!this.file){
+                this.confirmedImage = "";
+                return;
+            }
             if (!this.file.type.match("image.*")) {
                 this.confirmedImage = "";
                 return;

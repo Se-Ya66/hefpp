@@ -43,8 +43,9 @@ export default {
             .then(res => {
                 this.liked = true;
                 this.num = res.data.count;
-            }).catch(function(error) {
-                console.log(error);
+            })
+            .catch(err => {
+                console.log(err);
             });
         },
         unlike() {
@@ -52,25 +53,27 @@ export default {
             .then(res => {
                 this.liked = false;
                 this.num = res.data.count;
-            }).catch(function(error){
-                console.log(error);
+            })
+            .catch(err => {
+                console.log(err);
             });
         },
         count() {
             this.$axios.get('/articles/' + this.$route.params.id +'/count')
             .then(res => {
                 this.num = res.data.count;
-            }).catch(function(error){
-                console.log(error);
+            })
+            .catch(err => {
+                console.log(err);
             });
         },
         hasfavorites() { 
             this.$axios.get(`/articles/${this.$route.params.id}/hasfavorites`)
             .then(res => {
                 this.liked = res.data.result;
-                console.log(this.liked);
-            }).catch(function(error){
-                console.log(error);
+            })
+            .catch(err => {
+                console.log(err);
             });
         }
     }

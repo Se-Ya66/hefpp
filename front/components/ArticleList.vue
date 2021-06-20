@@ -321,7 +321,7 @@ export default {
         newIcon(userId){
             const idx = this.profiles.findIndex(p => p.user_id == userId)
             if(idx < 0){
-                return ''
+                return '../image.jpg'
             }
             if(!this.profiles[idx].file_path){
                 return '../image.jpg'

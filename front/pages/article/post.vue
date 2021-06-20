@@ -12,6 +12,7 @@ import Footer from '~/components/Footer.vue'
 import postarticle from '~/components/PostArticle.vue'
 
 export default {
+    middleware: 'auth',
     components:{
         Header,
         Footer,

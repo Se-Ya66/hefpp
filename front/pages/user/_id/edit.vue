@@ -12,16 +12,12 @@ import Footer from '~/components/Footer.vue'
 import editprofile from '~/components/EditProfile.vue'
 
 export default {
+    middleware: 'auth',
     components:{
         Header,
         Footer,
         editprofile
     },
-    data(){
-        return{
-
-        }
-    }
 }
 </script>
 

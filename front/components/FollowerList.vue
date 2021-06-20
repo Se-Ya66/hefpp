@@ -37,20 +37,20 @@ export default {
             this.$axios.get(`/${this.$route.params.id}/followers`)
             .then(res => {
                 this.followers = res.data.user;
-            }).catch(function(error){
-                console.log(error);
+            })
+            .catch(err => {
+                console.log(err);
             });
         },
         newIcon(userId){
             const idx = this.profiles.findIndex(p => p.user_id == userId)
             if(idx < 0){
-                return '/_nuxt/static/image.jpg'
+                return '../image.jpg'
             }else{
                 if(!this.profiles[idx].file_path){
-                    return '/_nuxt/static/image.jpg'
+                    return '../image.jpg'
                 }else{
                     return this.profiles[idx].file_path
-
                 }
             }
         },

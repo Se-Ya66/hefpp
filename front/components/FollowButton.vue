@@ -55,7 +55,6 @@ import { mapState } from 'vuex';
         followerNum:'',
         followings:[],
         followers:[],
-
       }
     },
     created(){
@@ -68,7 +67,7 @@ import { mapState } from 'vuex';
     },
     computed: {
       ...mapState('profile', [
-          'profiles',
+        'profiles',
       ]),
       canFollow(){
         const num = Number(this.$route.params.id);
@@ -89,8 +88,9 @@ import { mapState } from 'vuex';
         .then(res => {
           this.followerNum = res.data.follower_count;
           this.isFollowedBy = true;
-        }).catch(function(error) {
-          console.log(error);
+        })
+        .catch(err => {
+            console.log(err);
         });
       },
       unfollow() {
@@ -98,17 +98,18 @@ import { mapState } from 'vuex';
         .then(res => {
           this.followerNum = res.data.follower_count;
           this.isFollowedBy = false;
-        }).catch(function(error){
-          console.log(error);
+        })
+        .catch(err => {
+            console.log(err);
         });
       },
       isFollowed() { 
         this.$axios.get(`/${this.userId}/follow`)
         .then(res => {
           this.isFollowedBy = res.data.result;
-          console.log(this.isFollowedBy);
-        }).catch(function(error){
-          console.log(error);
+        })
+        .catch(err => {
+            console.log(err);
         });
       },
       count() {
@@ -116,35 +117,38 @@ import { mapState } from 'vuex';
           .then(res => {
             this.followNum = res.data.follow_count;
             this.followerNum = res.data.follower_count;
-          }).catch(function(error){
-            console.log(error);
+          })
+          .catch(err => {
+              console.log(err);
           });
       },
       followList() {
           this.$axios.get(`/${this.$route.params.id}/followings`)
           .then(res => {
             this.followings = res.data.user;
-          }).catch(function(error){
-            console.log(error);
+          })
+          .catch(err => {
+              console.log(err);
           });
       },
       followerList() {
           this.$axios.get(`/${this.$route.params.id}/followers`)
           .then(res => {
             this.followers = res.data.user;
-          }).catch(function(error){
-            console.log(error);
+          })
+          .catch(err => {
+            console.log(err);
           });
       },
       goSendPage(){
         const idx = this.profiles.findIndex(p => p.user_id == this.user.id)
         if(idx < 0){
-            this.$store.dispatch('flashMessage/showMessage',{
-                message: '先にプロフィールを作成してください',
-                status: true
-            })
+          this.$store.dispatch('flashMessage/showMessage',{
+              message: '先にプロフィールを作成してください',
+              status: true
+          })
         }else{
-            this.$router.push({ path: `/message/${this.$route.params.id}` })
+          this.$router.push({ path: `/message/${this.$route.params.id}` })
         }
       },
     }

@@ -74,6 +74,7 @@
                             <v-container>
                             <v-text-field 
                             outlined
+                            type="password"
                             v-model="mypassword.current_password"
                             />
                             </v-container>
@@ -83,9 +84,11 @@
                             <v-container>
                             <v-text-field 
                             outlined
+                            type="password"
                             v-model="mypassword.new_password"
                             :rules="[rules.required, rules.counter2]"
                             />
+                            <p class="error-message">{{passMessege}}</p>
                             </v-container>
                         </div>
                     </v-form>
@@ -199,6 +202,7 @@
                                     <v-textarea 
                                     outlined
                                     v-model="myprofile.introduction"
+                                    counter="300"
                                     />
                                     </v-container>
                                 </div>
@@ -284,7 +288,6 @@ export default {
             },
             myprofile:{
                 type: '',
-                // image: '',
                 prefecture: '',
                 url: '',
                 tel: '',
@@ -346,7 +349,6 @@ export default {
                 required: value => !!value || ' 必須項目です',
                 counter: value => value.length >= 3 || '3文字以上で指定してください',
                 counter2: value => value.length >= 8 || '8文字以上で指定してください',
-                // counter3: value => value.length <= 300 || '300文字以内で指定してください',
                 email: value => {
                     const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
                     return pattern.test(value) || '有効なメールアドレスを指定してください'
@@ -354,7 +356,8 @@ export default {
             },
             file:"",
             confirmedImage: "",
-            message:''
+            message:'',
+            passMessege:'',
         }
     },
     created(){
@@ -388,14 +391,21 @@ export default {
         ...mapActions('users', ['update']),
             async updateInfo () {
                 await this.$store.dispatch('users/update', this.myinfo)
-                // this.$router.go({path: this.$router.currentRoute.path, force: true})
                 this.dialog2 = false;
         },
         ...mapActions('users', ['updatePassword']),
         async updatePassword () {
-            if(this.$refs.password_form.validate()){
-                await this.$store.dispatch('users/updatePassword', this.mypassword)
-                console.log(this.mypassword);
+            if(this.user.name === 'testuser'){
+                this.passMessege = 'テストユーザーは変更できません'
+                this.current_password = '';
+                this.new_password = '';
+                return
+            }else{
+                if(this.$refs.password_form.validate()){
+                    await this.$store.dispatch('users/updatePassword', this.mypassword)
+                    this.current_password = '';
+                    this.new_password = '';
+                }
             }
         },
         confirmDialog(){
@@ -445,7 +455,9 @@ export default {
                 this.confirmedImage = e.target.result;
             };
         },
-        
+        clearImage(){
+            this.confirmedImage = "";
+        }
     }
     
 }
@@ -453,7 +465,6 @@ export default {
 
 <style lang="scss">
 .edit-profile-wrapper{
-    // width:80%;
     width:90%;
     margin: 0 auto;
     padding:$page-pt 0;

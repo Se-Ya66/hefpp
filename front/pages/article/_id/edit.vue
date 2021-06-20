@@ -14,15 +14,11 @@ import editarticle from '~/components/EditArticle.vue'
 import { mapState } from "vuex"
 
 export default {
+    middleware: 'auth',
     components:{
         Header,
         Footer,
         editarticle
-    },
-    data(){
-        return{
-            
-        }
     },
 }
 </script>

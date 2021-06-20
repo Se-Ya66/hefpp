@@ -131,8 +131,7 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
-        // $article = Article::find($id);
-        // $article->delete();
+        
         $article = Article::find($id);
         $image = $article->file_path;
         $s3_delete = Storage::disk('s3')->delete($image);

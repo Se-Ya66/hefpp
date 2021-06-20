@@ -42,45 +42,64 @@
 </template>
 
 <script>
-  export default {
-    middleware: 'guest',
-    data() {
-      return {
-        form: {
-          name: '',
-          email: '',
-          password: ''
+import { mapState } from "vuex"
+
+export default {
+  middleware: 'guest',
+  data() {
+    return {
+      form: {
+        name: '',
+        email: '',
+        password: ''
+      },
+      rules: {
+        required: value => !!value || ' 必須項目です',
+        counter: value => value.length >= 3 || '3文字以上で指定してください',
+        counter2: value => value.length >= 8 || '8文字以上で指定してください',
+        email: value => {
+            const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            return pattern.test(value) || '有効なメールアドレスを指定してください'
         },
-        rules: {
-          required: value => !!value || ' 必須項目です',
-          counter: value => value.length >= 3 || '3文字以上で指定してください',
-          counter2: value => value.length >= 8 || '8文字以上で指定してください',
-          email: value => {
-              const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-              return pattern.test(value) || '有効なメールアドレスを指定してください'
-          },
-        },
+      },
+    }
+  },
+  created(){
+    this.$store.dispatch('users/loadMembers');
+  },
+  methods: {
+    async register() {
+      if(this.members.length >= 10){
+        this.form.name = ''
+        this.form.email = ''
+        this.form.password = ''
+        this.$store.dispatch('flashMessage/showMessage',{
+          message: 'これ以上登録できません',
+          status: true
+        })
+        return
       }
-    },
-    methods: {
-      async register() {
-        if(this.$refs.register_form.validate()){
-          try {
-              await this.$axios.post('/auth/register', this.form);
-          } catch(e) {
-              return;
-          }
-          this.$store.dispatch('flashMessage/showMessage',{
-            message: ' 登録しました',
-            status: true
-          })
-          this.$auth.login({data: this.form});
-          
-          this.$router.push({name: 'main'});
+      if(this.$refs.register_form.validate()){
+        try {
+            await this.$axios.post('/auth/register', this.form);
+        } catch(e) {
+            return;
         }
+        this.$store.dispatch('flashMessage/showMessage',{
+          message: ' 登録しました',
+          status: true
+        })
+        this.$auth.login({data: this.form});
+        this.$router.push({name: 'main'});
       }
     }
+  },
+  computed:{
+    ...mapState('users', [
+      'members',
+    ]),
   }
+}
 </script>
 
 <style lang="scss">

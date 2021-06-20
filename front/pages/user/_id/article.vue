@@ -51,7 +51,7 @@
                                         <v-btn
                                         text
                                         depressed
-                                        @click="dialog=true"
+                                        @click.stop="openDialog(article)"
                                         >
                                             投稿を削除する
                                         </v-btn>
@@ -59,33 +59,39 @@
                                 </v-list>
                             </v-menu>
                         </v-card>
-                        <transition name="confirm">
-                            <div class="bg" v-show="dialog">
-                                <div 
-                                class="bg-inner"
-                                width="100%"
-                                max-height="200"
-                                max-width="500"
-                                >
-                                    <p class="mb-6">削除してよろしいでしょうか？</p>
-                                        <div class="btn-wrapper">
-                                            <div
-                                            class="edit-btn delete-btn"
-                                            @click="destroyArticle(article)"
-                                            >
-                                                削除
-                                            </div>
-                                            <div
-                                            class="edit-btn ml-2"
-                                            @click="dialog=false"
-                                            >
-                                                キャンセル
-                                            </div>
-                                        </div>
-                                </div>
-                            </div>
-                        </transition>
                     </v-col>
+                    <v-dialog 
+                    v-model="dialog" 
+                    v-if="currentArticle" 
+                    max-height="200"
+                    max-width="500"
+                    activator
+                    >
+                        <v-card>
+                            <v-cpntainer>
+                                <v-card-title>
+                                削除してもよろしいでしょうか？
+                                </v-card-title>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn
+                                    dark
+                                    color="red"
+                                    @click="destroyArticle(currentArticle)"
+                                    >
+                                        削除
+                                    </v-btn>
+                                    <v-btn
+                                    dark
+                                    color="green"
+                                    @click="dialog = false"
+                                    >
+                                        キャンセル
+                                    </v-btn>
+                                </v-card-actions>
+                            </v-cpntainer>
+                        </v-card>
+                    </v-dialog>
                 </v-row>
             </v-container>
         </div>
@@ -100,6 +106,7 @@ import Footer from '~/components/Footer.vue'
 import { mapState } from "vuex"
 
 export default {
+    middleware: 'auth',
     components:{
         Header,
         Footer,
@@ -107,6 +114,7 @@ export default {
     data(){
         return{
             dialog:false,
+            currentArticle:null
         }
     },
     created() {
@@ -114,9 +122,13 @@ export default {
         this.$store.dispatch('profile/loadProfiles');
     },
     methods: {
-        destroyArticle(articleId){
-            this.$store.dispatch('article/delete',articleId);
-            this.$router.go({path: this.$router.currentRoute.path, force: true})
+        destroyArticle(article){
+            this.$store.dispatch('article/delete',article);
+            this.dialog = false;
+        },
+        openDialog(article){
+            this.currentArticle = article;
+            this.dialog = true;
         }
     },
     computed:{
@@ -164,8 +176,6 @@ export default {
             object-fit: cover;
         }
     }
-    .delete-btn{
-        background: linear-gradient(to right, #BD3F32, #CB356B);
-    }
+    
 }
 </style>

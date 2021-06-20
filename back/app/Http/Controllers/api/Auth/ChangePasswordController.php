@@ -44,24 +44,17 @@ class ChangePasswordController extends Controller
     {
         
         $user = User::find($id);
-        // 現在のパスワードを確認
         if (!password_verify($request->current_password, $user->password)) {
             return response()->json([
                 'success' => false,
                 'errors' => [
-                    
                     'password' => [
                         "パスワードが合致しません"
                     ],
                 ]
-                // 'errors' => $validator->errors()
             ],422);
-            
         }
-
         $this->validator($request->all())->validate();
-        // パスワードを保存
-        // $user->password = Hash::make($request->new_password);
         $user->password = bcrypt($request->new_password);
         $user->save();
 }

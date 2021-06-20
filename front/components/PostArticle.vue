@@ -42,17 +42,15 @@
                     v-model="article.body"
                     outlined
                     label="詳細"
-                    :rules="[rules.required, rules.counter2]"
-                    maxlength="300"
-                    counter
+                    :rules="[rules.required]"
+                    counter="300"
                     />
                     <v-textarea
                     v-model="article.conditions"
                     outlined
                     label="条件"
-                    :rules="[rules.required, rules.counter2]"
-                    maxlength="300"
-                    counter
+                    :rules="[rules.required]"
+                    counter="300"
                     />
                 </v-form>
             </div>
@@ -79,6 +77,10 @@
                     <v-container>
                         <p>{{article.type}}</p>
                     </v-container>
+                    <span>イメージ</span>
+                    <p v-if="confirmedImage">
+                        <img class="verify-img" :src="confirmedImage" />
+                    </p>
                     <span>都道府県</span>
                     <v-container>
                         <p>{{article.prefecture}}</p>
@@ -91,6 +93,7 @@
                     <v-container>
                         <p>{{article.conditions}}</p>
                     </v-container>
+                    <p class="error-text">{{limit}}</p>
                     <div class="btn-wrapper">
                         <div
                         class="edit-btn"
@@ -112,7 +115,7 @@
 </template>
 
 <script>
-import {  mapState } from 'vuex';
+import { mapState } from "vuex"
 
 export default {
     data(){
@@ -179,13 +182,20 @@ export default {
             rules: {
                 required: value => !!value || ' 必須項目です',
                 counter: value => value.length <= 50 || '50文字以内で指定してください',
-                counter2: value => value.length <= 300 || '300文字以内で指定してください',
             },
-            message:''
+            message:'',
+            limit:''
         }
+    },
+    created(){
+        this.$store.dispatch('article/loadArticles');
     },
     methods:{
         postArticles(){
+            if(this.articles.length >= 10){
+                this.limit = 'これ以上投稿できません。'
+                return
+            }
             let data = new FormData();
             data.append("title", this.article.title);
             data.append("body", this.article.body);
@@ -203,7 +213,6 @@ export default {
             }, error => {
                 this.dialog = false;
                 this.message = error.response.data.errors.file[0];
-                console.log(error.response.data.errors);
             })
         },
         confirmDialog(){
@@ -213,6 +222,10 @@ export default {
         },
         confirmImage(e) {
             this.article.file = e.target.files[0];
+            if(!this.article.file){
+                this.confirmedImage = "";
+                return;
+            }
             if (!this.article.file.type.match("image.*")) {
                 this.confirmedImage = "";
                 return;
@@ -228,9 +241,9 @@ export default {
         },
     },
     computed:{
-        // ...mapState('article', [
-        //     'message',
-        // ]),
+        ...mapState('article', [
+            'articles',
+        ]),
     },
 }
 </script>
@@ -246,7 +259,12 @@ export default {
         margin: 0 auto;
         .article-img{
             width:100%;
-            height:400px;
+            height:300px;
+            object-fit: cover;
+        }
+        .verify-img{
+            width:100%;
+            height:200px;
             object-fit: cover;
         }
     }

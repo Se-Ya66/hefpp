@@ -34,7 +34,6 @@ export const mutations = {
 export const actions = {
     loadArticles({commit}){
         this.$axios.get('/articles').then(data =>{
-        // let articles = data.data
         let articles = data.data.result.data
         commit('setArticles', articles)
         })
@@ -43,9 +42,8 @@ export const actions = {
         })
     },
     async postArticles({ commit }, article) {
-        const data = await this.$axios.post('/articles', article)
         await new Promise((resolve, reject) => {
-            this.$axios.post('/articles', article)
+            const data = this.$axios.post('/articles', article)
             .then(response => {
                 resolve(response)
             }).catch(error => {
@@ -55,13 +53,6 @@ export const actions = {
             })
         })
     },
-    // async postArticles({ commit }, article){
-    //     const data = await this.$axios.post('/articles', article)
-    //     .catch(err => {
-    //         console.log(err)
-    //     })
-    //     commit('createArticles', data)
-    // },
     delete({state, commit}, article){
         const index = state.articles.indexOf(article);
         this.$axios.delete('/articles/'+ article.id).then(res =>{

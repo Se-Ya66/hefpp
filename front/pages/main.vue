@@ -18,14 +18,5 @@ export default {
         Footer,
         articlelist
     },
-    data(){
-        return{
-            
-        }
-    }
 }
 </script>
-
-<style lang="scss">
-    
-</style>

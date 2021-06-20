@@ -12,19 +12,7 @@ use Tymon\JWTAuth\JWTAuth;
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    | このコントローラは新規ユーザの登録とそのユーザの登録を処理します。
-    | 検証と作成 デフォルトでは、このコントローラーは以下の特性を使います。
-    | 追加のコードを必要とせずにこの機能を提供します。
-    */
-
+    
     use RegistersUsers;
 
     /**

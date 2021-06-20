@@ -16,8 +16,8 @@
                     </div>
                 </div>
                 <p>{{article.created_at}}</p>
-                <img :src="article.file_path" class="article-img" v-if="article.file_path">
-                <img src="../../../static/noimage.jpg" class="showarticle-img" v-else>
+                <img :src="article.file_path" class="showarticle-image" v-if="article.file_path">
+                <img src="../../../static/noimage.jpg" class="showarticle-noimage" v-else>
                 <v-container>
                     <div class="article-bottom-wrapper">
                         <v-row justify="space-between">
@@ -55,10 +55,7 @@ import articlelike from '~/components/ArticleLike.vue'
 import { mapState } from "vuex"
 
 export default {
-    // async fetch ({ store }) {
-    //     const article = await store.dispatch('article/show', this.$route.params.id)
-    //     store.commit('article/showArticles', article)
-    // },
+    middleware: 'auth',
     components:{
         Header,
         Footer,
@@ -77,9 +74,6 @@ export default {
         ...mapState('article', [
             'article',
         ]),
-        // article(){
-        //     return this.$store.getters['article/showArticles']
-        // },
         ...mapState('users', [
             'members',
         ]),
@@ -142,7 +136,15 @@ export default {
             }
         }
     }
-    .showarticle-img{
+    .showarticle-image{
+        width:100%;
+        height:300px;
+        object-fit: cover;
+        @include sp {
+            height:100px;
+        };
+    }
+    .showarticle-noimage{
         width:200px;
         height:200px;
         object-fit: cover;
