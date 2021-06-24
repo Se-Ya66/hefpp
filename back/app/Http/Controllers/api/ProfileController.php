@@ -102,9 +102,12 @@ class ProfileController extends Controller
 
         $id = $request->user()->id;
         $profile = Profile::Where('user_id', $id)->first(); 
+        $file = $profile->file_path;
+        $s3_delete = Storage::disk('s3')->delete($file);
         $image = $request->file('file');
         $path = Storage::disk('s3')->put('profile', $image, 'public');
-        $profile->file_path = Storage::disk('s3')->url($path);
+        // $profile->file_path = Storage::disk('s3')->url($path);
+        $profile->file_path = $path;
         $profile->save();
         return $profile;
     }

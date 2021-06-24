@@ -107,7 +107,8 @@ export default {
                 return '../image.jpg'
                 
             } else {
-                return this.profiles[idx].file_path
+                let path = this.profiles[idx].file_path;
+                return `https://${process.env.AWS_BUCKET}.s3.ap-northeast-1.amazonaws.com/${path}`
             }
         },
     }

@@ -122,7 +122,7 @@
                                         >   
                                             <div v-if="profile.file_path">
                                                 <v-avatar size="100">
-                                                    <img :src="profile.file_path">
+                                                    <img :src="`https://${AWS}.s3.ap-northeast-1.amazonaws.com/${profile.file_path}`" v-if="profile.file_path">
                                                 </v-avatar>
                                             </div>
                                             <div v-else>
@@ -358,6 +358,7 @@ export default {
             confirmedImage: "",
             message:'',
             passMessege:'',
+            AWS:process.env.AWS_BUCKET
         }
     },
     created(){

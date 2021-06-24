@@ -75,7 +75,8 @@
                         </div>
                         <div class="article-item" v-for="(article, id) in displayResult" :key="id">
                             <nuxt-link :to="`/article/${article.id}`">
-                                <img :src="article.file_path" class="article-img" v-if="article.file_path">
+                                <!-- <img :src="article.file_path" class="article-img" v-if="article.file_path"> -->
+                                <img :src="`https://${AWS}.s3.ap-northeast-1.amazonaws.com/${article.file_path}`" class="article-img" v-if="article.file_path">
                                 <img src="../static/noimage.jpg" class="article-img" v-else>
                             </nuxt-link>
                             <span class="user-type-production">{{article.type}}</span>
@@ -107,7 +108,8 @@
                         </div>
                         <div class="article-item" v-for="(article, id) in articles" :key="id">
                             <nuxt-link :to="`/article/${article.id}`">
-                                <img :src="article.file_path" class="article-img" v-if="article.file_path">
+                                <!-- <img :src="article.file_path" class="article-img" v-if="article.file_path"> -->
+                                <img :src="`https://${AWS}.s3.ap-northeast-1.amazonaws.com/${article.file_path}`" class="article-img" v-if="article.file_path">
                                 <img src="../static/noimage.jpg" class="article-img" v-else>
                             </nuxt-link>
                             <span class="user-type-production">{{article.type}}</span>
@@ -302,7 +304,8 @@ export default {
             lastPage:1,
             resultLength:0,
             displayResult:[],
-            articles:{}
+            articles:{},
+            AWS:process.env.AWS_BUCKET
         }
     },
     created () {
@@ -326,7 +329,8 @@ export default {
             if(!this.profiles[idx].file_path){
                 return '../image.jpg'
             } else {
-                return this.profiles[idx].file_path
+                let path = this.profiles[idx].file_path;
+                return `https://${process.env.AWS_BUCKET}.s3.ap-northeast-1.amazonaws.com/${path}`
             }
         },
         searchType(){

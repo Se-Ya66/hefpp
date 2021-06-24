@@ -12,7 +12,7 @@
                             </div>
                             <div v-else>
                                 <v-avatar size="70">
-                                    <img :src="profile.file_path">
+                                    <img :src="`https://${AWS}.s3.ap-northeast-1.amazonaws.com/${profile.file_path}`" v-if="profile.file_path">
                                 </v-avatar>
                             </div>
                         </div>
@@ -115,7 +115,7 @@
                                             tile
                                             :to="`/article/${article.id}`"
                                             >
-                                                <img :src="article.file_path" class="article-img" v-if="article.file_path">
+                                                <img :src="`https://${AWS}.s3.ap-northeast-1.amazonaws.com/${article.file_path}`" class="article-img" v-if="article.file_path">
                                                 <img src="../static/noimagebig.jpg" class="articlelist-img" v-else>
                                                 <h2 class="card-title">
                                                     {{article.title}}
@@ -157,7 +157,8 @@ export default {
     },
     data(){
         return{
-            show:true
+            show:true,
+            AWS:process.env.AWS_BUCKET
         }
     },
     created () {

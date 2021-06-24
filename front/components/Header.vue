@@ -27,8 +27,7 @@
                     >
                         <v-avatar size="50">
                             <img :src="newIcon(user.id)">
-                            <!-- <img :src="profile.file_path" v-if="profile.file_path">
-                            <img src="../static/image.jpg" v-else> -->
+                            <!-- <img :src="`https://${AWS}.s3.ap-northeast-1.amazonaws.com/${newIcon(user.id)}`" > -->
                         </v-avatar>
                     </v-btn>
                 </template>
@@ -61,7 +60,7 @@ import {  mapState } from 'vuex';
 export default {
     data(){
         return{
-            
+            AWS:process.env.AWS_BUCKET
         }
     },
     methods: {
@@ -80,7 +79,9 @@ export default {
                 if(!this.profiles[idx].file_path){
                     return '../../image.jpg'
                 }else{
-                    return this.profiles[idx].file_path
+                    let path = this.profiles[idx].file_path;
+                    return `https://${process.env.AWS_BUCKET}.s3.ap-northeast-1.amazonaws.com/${path}`
+                    
                 }
             }
         },

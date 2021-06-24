@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <p>{{article.created_at}}</p>
-                <img :src="article.file_path" class="showarticle-image" v-if="article.file_path">
+                <img :src="`https://${AWS}.s3.ap-northeast-1.amazonaws.com/${article.file_path}`" class="showarticle-image" v-if="article.file_path">
                 <img src="../../../static/noimage.jpg" class="showarticle-noimage" v-else>
                 <v-container>
                     <div class="article-bottom-wrapper">
@@ -63,7 +63,8 @@ export default {
     },
     data(){
         return{
-            show:false
+            show:false,
+            AWS:process.env.AWS_BUCKET
         }
     },
     created () {
@@ -97,7 +98,8 @@ export default {
             if(!this.profiles[idx].file_path){
                 return '../image.jpg'
             } else {
-                return this.profiles[idx].file_path
+                let path = this.profiles[idx].file_path;
+                return `https://${process.env.AWS_BUCKET}.s3.ap-northeast-1.amazonaws.com/${path}`
             }
         },
     }

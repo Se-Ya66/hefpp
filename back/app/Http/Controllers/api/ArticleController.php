@@ -52,9 +52,8 @@ class ArticleController extends Controller
             ]);
             $article = $request->file('file');
             $path = Storage::disk('s3')->put('article', $article, 'public');
-
             $article = new Article;
-            $article->file_path = Storage::disk('s3')->url($path);
+            $article->file_path = $path;
             $article->fill($request->all());
             $article->user_id = $request->user()->id;
             $article->save();
@@ -116,9 +115,12 @@ class ArticleController extends Controller
             "file.max" => "容量が1Ｍを超えています。",
         ]);
         $article = Article::find($id);
+        $file = $article->file_path;
+        $s3_delete = Storage::disk('s3')->delete($file);
         $image = $request->file('file');
         $path = Storage::disk('s3')->put('article', $image, 'public');
-        $article->file_path = Storage::disk('s3')->url($path);
+        // $article->file_path = Storage::disk('s3')->url($path);
+        $article->file_path = $path;
         $article->save();
         return $article;
     }

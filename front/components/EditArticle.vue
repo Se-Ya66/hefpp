@@ -7,7 +7,7 @@
                         <img class="article-img" :src="confirmedImage" />
                     </p>
                     <p v-else>
-                        <img :src="article.file_path" class="article-img" v-if="article.file_path">
+                        <img :src="`https://${AWS}.s3.ap-northeast-1.amazonaws.com/${article.file_path}`" class="article-img" v-if="article.file_path">
                     </p>
                     <input class="mb-3" type="file" @change="confirmImage" />
                     <div class="edit-btn confirm-btn"
@@ -215,7 +215,8 @@ export default {
                 counter: value => value.length <= 50 || '50文字以内で指定してください',
                 counter: value => value.length <= 300 || '50文字以内で指定してください',
             },
-            message:''
+            message:'',
+            AWS:process.env.AWS_BUCKET
         }
     },
     created () {

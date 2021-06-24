@@ -13,7 +13,7 @@
                         tile
                         >
                             <nuxt-link :to="`/article/${article.id}`">
-                                <img :src="article.file_path" class="user-article-img" v-if="article.file_path">
+                                <img :src="`https://${AWS}.s3.ap-northeast-1.amazonaws.com/${article.file_path}`" class="user-article-img" v-if="article.file_path">
                                 <img src="../../../static/noimagemini.jpg" class="user-article-img" v-else>
                             </nuxt-link>
                             <h2 class="card-title">
@@ -114,7 +114,8 @@ export default {
     data(){
         return{
             dialog:false,
-            currentArticle:null
+            currentArticle:null,
+            AWS:process.env.AWS_BUCKET
         }
     },
     created() {

@@ -1,5 +1,8 @@
 import colors from 'vuetify/es5/util/colors'
 
+require('dotenv').config();
+const { AWS_BUCKET } = process.env;
+
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -42,12 +45,13 @@ export default {
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
   ],
-
+  
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     '@nuxtjs/axios',
     '@nuxtjs/auth',
-    '@nuxtjs/style-resources'
+    '@nuxtjs/style-resources',
+    '@nuxtjs/dotenv'
 
   ],
   styleResources: {
@@ -87,5 +91,8 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-  }
+  },
+  env: {
+    AWS_BUCKET
+  },
 }
