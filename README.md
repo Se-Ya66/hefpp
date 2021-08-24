@@ -17,6 +17,7 @@
     - Javascript
     - Nuxt.js（SSR）
     - Vuetify（UIフレームワーク）
+    - SCSS
  - バックエンド
     - PHP
     - Laravel
